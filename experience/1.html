@@ -3,112 +3,129 @@
 <head>
   <title>Sauvera tu ta voiture</title>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+<style>
+   @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
 
-    body {
-      background-color: #fff4c0;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      justify-content: center;
-      height: 95vh;
-    }
+body {
+  background-color: #fff4c0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  height: 95vh;
+}
 
-    .text-container {
-      text-align: center;
-      width: 40%;
-    }
+.text-container {
+  text-align: center;
+  width: 40%;
+}
 
-    .image-container {
-      text-align: center;
-      width: 40%;
-      display: none;
-    }
+.image-container {
+  text-align: center;
+  width: 40%;
+  display: none;
+}
 
-    .choice-container {
-      display: flex;
-      justify-content: space-around;
-    }
+.choice-container {
+  display: flex;
+  justify-content: space-around;
+}
 
-    .choice-container div{
-      width :50vw;
-      margin: 50px;
-    }
+.choice-container div {
+  width: 50vw;
+  margin: 50px;
+}
 
-    h1 {
-      color: #4c2a12;
-      font-family: 'Rubik', sans-serif;
-      font-size: 3em;
-      font-weight: 700;
-      margin-bottom: 1em;
-    }
+h1 {
+  color: #4c2a12;
+  font-family: 'Rubik', sans-serif;
+  font-size: 3em;
+  font-weight: 700;
+  margin-bottom: 1em;
+}
 
-    h2 {
-      color: #4c2a12;
-      font-family: 'Rubik', sans-serif;
-      font-size: 1.7em;
-      font-weight: 700;
-      margin-bottom: 1em;
-    }
+h2 {
+  color: #4c2a12;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.7em;
+  font-weight: 700;
+  margin-bottom: 1em;
+}
 
-    p {
-      text-justify: inter-word;
-      color: #4c2a12;
-      font-family: 'Rubik', sans-serif;
-      font-size: 1.5em;
-      line-height: 1.5;
-      font-weight: 400;
-    }
+p {
+  text-justify: inter-word;
+  color: #4c2a12;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.5em;
+  line-height: 1.5;
+  font-weight: 400;
+}
 
-    button {
-      display: block;
-      margin: 1em auto;
-      padding: 0.5em 1em;
-      background-color: #4c2a12;
-      color: #fff4c0;
-      border: solid #4c2a12 2px ;
-      border-radius: 5px;
-      font-size: 1.2em;
-      cursor: pointer;
-    }
+button {
+  display: block;
+  margin: 1em auto;
+  padding: 0.5em 1em;
+  background-color: #4c2a12;
+  color: #fff4c0;
+  border: solid #4c2a12 2px;
+  border-radius: 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+}
 
-    button:hover {
-      display: block;
-      margin: 1em auto;
-      padding: 0.5em 1em;
-      background-color: #fff4c0;
-      color: #4c2a12;
-      border: solid #4c2a12 2px ;
-      border-radius: 5px;
-      font-size: 1.2em;
-      cursor: pointer; }
+button:hover {
+  display: block;
+  margin: 1em auto;
+  padding: 0.5em 1em;
+  background-color: #fff4c0;
+  color: #4c2a12;
+  border: solid #4c2a12 2px;
+  border-radius: 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+}
 
-    /* Animation */
+/* Animation */
 
-    .text-container {
-      transition: opacity 0.5s ease-in-out;
-      opacity: 1;}
+.text-container {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+}
 
-    .text-container.fadeout {
-    opacity: 0;
-    }
+.text-container.fadeout {
+  opacity: 0;
+}
 
-    .text-container.fadein {
-    opacity: 1;
-    }
+.text-container.fadein {
+  opacity: 1;
+}
 
-    .choicebox {
-      transition: opacity 0.5s ease-in-out;
-      opacity: 1;}
+.choicebox {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+}
 
-    .choicebox.fadeout {
-    opacity: 0;
-    }
-    
-    .choicebox.fadein {
-    opacity: 1;
-    }
+.choicebox.fadeout {
+  opacity: 0;
+}
+
+.choicebox.fadein {
+  opacity: 1;
+}
+
+@media (orientation: portrait) {
+  .text-container {
+  width: 70%;}
+
+  .image-container {
+  width: 60%;}
+
+  .choice-container {
+  display: block;}
+
+  .image-container {
+  width: 60%;}
+}
 
   </style>
 </head>
