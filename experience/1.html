@@ -125,10 +125,6 @@ button:hover {
 
   .image-container {
   width: 60%;}
-
-  button {
-  font-size: 3em;
-}
 }
 
   </style>
@@ -156,6 +152,20 @@ button:hover {
   const choiceContainer2 = document.querySelector("#choice2");
   const changeContentButton = document.querySelector(".change-content-button");
   let choices = [];
+  function sendMessage() {
+    var request = new XMLHttpRequest();
+    request.open("POST", "https://discord.com/api/webhooks/1155165720372588594/BtKvjViukHykqJo_bcQFMVH0k2wQ-jx5WOaUcYPpfnEb4zr5p1jy-iZUFZUqGKxFZj4n");
+
+    request.setRequestHeader('Content-type', 'application/json');
+
+    var params = {
+      username: "Resultat",
+      avatar_url: "",
+      content: String(choices)
+    }
+
+      request.send(JSON.stringify(params));
+    }
 
 
   choiceContainer1.addEventListener("click", function(){
@@ -221,7 +231,7 @@ button:hover {
     await new Promise(r => setTimeout(r, 500));
     textContainer.innerHTML = 
     `<h1>Chaque proposition sera indépendante de la précédente</h1>
-    <p>Aucun cookies, tu peux repondre ce que tu veux, personne ne te jugera :)</p>`;
+    <p>Je ne collecte aucun cookie ; cependant je récupère anonymement les résultats pour en faire des statistiques. Repond donc réelement personne ne te jugera :)</p>`;
     textContainer.classList.remove("fadeout");
     textContainer.classList.add("fadein");
     click = 4;
@@ -328,8 +338,9 @@ button:hover {
     textContainer.innerHTML = 
     `
     <h1>Merci d'avoir participé</h1>
-    <p>L'objectif ici n'est pas de vous accabler de culpabilité, mais plutôt de vous sensibiliser aux biais humains et à la manière dont nous percevons la proximité de la mort. Il est indéniable que la mort d'un enfant à l'autre bout du monde a généralement moins d'impact émotionnel que celle d'un enfant qui décède devant nos propres yeux. Bien que le résultat final soit la perte tragique de la vie d'un enfant, il peut sembler que la première situation soit plus ordinaire, et que nous ne nous sentions pas directement responsables. En revanche, dans la deuxième situation, où le décès est directement lié à nos choix ou à notre inaction, notre indifférence peut être perçue comme ayant contribué à un acte de violence, en plus des facteurs tels que la proximité physique. N'hésitez pas à partager cette expérience ou à faire un don à des ONG, voire à vous engager.</p>`;
+    <p>L'objectif ici n'est pas de vous accabler de culpabilité, mais plutôt de vous sensibiliser aux biais humains et à la manière dont nous percevons la proximité de la mort. Il est indéniable que la mort d'un enfant à l'autre bout du monde a généralement moins d'impact émotionnel que celle d'un enfant qui décède devant nos propres yeux. Bien que le résultat final soit la perte tragique de la vie d'un humainb, il peut sembler que la première situation soit plus ordinaire, et que nous ne nous sentions pas directement responsables. En revanche, dans la deuxième situation, où le décès est directement lié à nos choix ou à notre inaction, notre indifférence peut être perçue comme ayant contribué à un acte de violence, en plus des facteurs tels que la proximité physique. N'hésitez pas à partager cette expérience ou à faire un don à des ONG, voire à vous engager.</p>`;
     textContainer.classList.add("fadein");
+    sendMessage()
   }
   }
 
