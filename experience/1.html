@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sauvera tu ta voiture</title>
+  <title>Sauverez-vous votre voiture</title>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <style>
    @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
@@ -180,8 +180,8 @@ button:hover {
     await new Promise(r => setTimeout(r, 100));
     textContainer.innerHTML = 
     `<img src="./car.png" style="width: 18vw;">
-    <h1>vous venez d'acheter la voiture de vos rêves</h1>
-    <p>On considerera qu'il s'agit d'une deuxieme voiture, ou de n'importe quel bien non essentiel d'une importante valeur pécunière que vous aimeriez possedez</p>`;
+    <h1>Vous venez d'acheter la voiture de vos rêves</h1>
+    <p>On considérera qu'il s'agit d'une deuxieme voiture, ou de n'importe quel bien non essentiel d'une importante valeur pécunière que vous aimeriez possédez</p>`;
     textContainer.classList.remove("fadeout");
     textContainer.classList.add("fadein");}
   var click = 0;
@@ -193,8 +193,8 @@ button:hover {
     await new Promise(r => setTimeout(r, 500));
     textContainer.innerHTML = 
     `<img src="./park.png" style="width: 18vw;">
-    <h1>vous garez votre voiture</h1>
-    <p>au bords d'une voie de chemin de fer désaffectée où plus aucun train ne passe... Cependant...</p>`;
+    <h1>Vous garez votre voiture</h1>
+    <p>au bord d'une voie de chemin de fer désaffectée où plus aucun train ne passe... Cependant...</p>`;
     textContainer.classList.remove("fadeout");
     textContainer.classList.add("fadein");
     click = 1;
@@ -206,7 +206,7 @@ button:hover {
     textContainer.innerHTML = 
     `<img src="./train.png" style="width: 18vw;">
     <h1>Une locomotive arrive</h1>
-    <p>à pleine vitesse, heureusement elle est <b> vide </b> mais se dirige droit vers votre voiture !</p>`;
+    <p>à pleine vitesse, heureusement elle est <b> complètement vide </b> mais se dirige droit vers votre voiture !</p>`;
     textContainer.classList.remove("fadeout");
     textContainer.classList.add("fadein");
     click = 2;
@@ -227,7 +227,7 @@ button:hover {
     await new Promise(r => setTimeout(r, 500));
     textContainer.innerHTML = 
     `<h1>Chaque proposition sera indépendante de la précédente</h1>
-    <p>Je ne collecte aucun cookie ; cependant je récupère anonymement les résultats pour en faire des statistiques. Repondez donc réelement personne ne vous jugera :)</p>`;
+    <p>Je ne collecte aucun cookie ; cependant je récupère anonymement les résultats pour en faire des statistiques. Répondez donc réellement, personne ne vous jugera :)</p>`;
     textContainer.classList.remove("fadeout");
     textContainer.classList.add("fadein");
     click = 4;
@@ -239,8 +239,8 @@ button:hover {
     document.getElementById('image-container').style.display = 'block';
     document.getElementById('button-suivant').style.display = 'none';
     textContainer.innerHTML = ``;
-    choiceContainer1.innerHTML = `<img src="./wall.png" height="300vh"><h2>La faire foncer dans un mur</h2><p>`;
-    choiceContainer2.innerHTML = `<img src="./yourcar.png" height="300vh"><h2>La faire foncer dans votre voiture</h2>`;
+    choiceContainer1.innerHTML = `<img src="./wall.png" height="300vh"><h2>Faire foncer la locomotive dans un mur</h2><p>`;
+    choiceContainer2.innerHTML = `<img src="./yourcar.png" height="300vh"><h2>Faire foncer la locomotive dans votre voiture</h2>`;
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.add("fadein");});
     click = 5;    
   }
@@ -248,8 +248,8 @@ button:hover {
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.remove("fadein");});
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.add("fadeout");});
     await new Promise(r => setTimeout(r, 500));
-    choiceContainer1.innerHTML = `<img src="./acar.png" height="300vh"><h2>La faire foncer dans la voiture vide d'un inconnu</h2>`;
-    choiceContainer2.innerHTML = `<img src="./yourcar.png" height="300vh"><h2>La faire foncer dans votre voiture</h2>`
+    choiceContainer1.innerHTML = `<img src="./acar.png" height="300vh"><h2>Faire foncer la locomotive dans la voiture vide d'un inconnu</h2>`;
+    choiceContainer2.innerHTML = `<img src="./yourcar.png" height="300vh"><h2>Faire foncer la locomotive dans votre voiture</h2>`
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.remove("fadeout");});
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.add("fadein");});
     click = 6;
@@ -258,8 +258,8 @@ button:hover {
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.remove("fadein");});
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.add("fadeout");});
     await new Promise(r => setTimeout(r, 500));
-    choiceContainer1.innerHTML = `<img src="./unknow.png" height="300vh"><h2>La faire prendre un chemin qui menne à un endroit inconnu</h2>`;
-    choiceContainer2.innerHTML = `<img src="./yourcar.png" height="300vh"><h2>La faire foncer dans votre voiture</h2>`
+    choiceContainer1.innerHTML = `<img src="./unknow.png" height="300vh"><h2>Faire prendre à la locomotive un chemin qui menne à un endroit inconnu</h2>`;
+    choiceContainer2.innerHTML = `<img src="./yourcar.png" height="300vh"><h2>Faire foncer la locomotive dans votre voiture</h2>`
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.remove("fadeout");});
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.add("fadein");});
     click = 7;
@@ -268,8 +268,8 @@ button:hover {
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.remove("fadein");});
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.add("fadeout");});
     await new Promise(r => setTimeout(r, 500));
-    choiceContainer1.innerHTML = `<img src="./children.png" height="300vh"><h2>La faire rentrer dans des enfants</h2>`;
-    choiceContainer2.innerHTML = `<img src="./yourcar.png" height="300vh"><h2>La faire foncer dans votre voiture</h2>`;
+    choiceContainer1.innerHTML = `<img src="./children.png" height="300vh"><h2>Faire rentrer la locomotive dans des enfants</h2>`;
+    choiceContainer2.innerHTML = `<img src="./yourcar.png" height="300vh"><h2>Faire foncer la locomotive dans votre voiture</h2>`;
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.remove("fadeout");});
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.add("fadein");});
     click = 8;
@@ -278,8 +278,8 @@ button:hover {
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.remove("fadein");});
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.add("fadeout");});
     await new Promise(r => setTimeout(r, 500));
-    choiceContainer1.innerHTML = `<img src="./sick.png" height="300vh"><h2>La faire rentrer dans des enfants malades qui vont mourrir dans 2 mois</h2>`;
-    choiceContainer2.innerHTML = `<img src="./yourcar.png" height="300vh"><h2>La faire foncer dans votre voiture</h2>`;
+    choiceContainer1.innerHTML = `<img src="./sick.png" height="300vh"><h2>Faire foncer la locomotive dans des enfants malades qui vont mourrir dans 2 mois</h2>`;
+    choiceContainer2.innerHTML = `<img src="./yourcar.png" height="300vh"><h2>Faire foncer la locomotive dans votre voiture</h2>`;
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.remove("fadeout");});
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.add("fadein");});
     click = 9;
@@ -291,7 +291,7 @@ button:hover {
     document.getElementById('button-suivant').style.display = 'block';
     document.getElementById('image-container').style.display = 'none';
     textContainer.innerHTML = 
-    `<h1>Tu as fait des choix difficile ?</h1>`;
+    `<h1>Avez vous fait des choix difficiles ?</h1>`;
     choiceBox.forEach(function(choiceBox) { choiceBox.classList.remove("fadeout");});
     textContainer.classList.add("fadein");
     click = 10;
@@ -301,7 +301,7 @@ button:hover {
     textContainer.classList.add("fadeout");
     await new Promise(r => setTimeout(r, 500));
     textContainer.innerHTML = 
-    `<h1>Revenons au debut</h1>`;
+    `<h1>Revenons au début</h1>`;
     textContainer.classList.add("fadein");
     click = 11;
   }
@@ -334,7 +334,7 @@ button:hover {
     textContainer.innerHTML = 
     `
     <h1>Merci d'avoir participé</h1>
-    <p>L'objectif ici n'est pas de vous accabler de culpabilité, mais plutôt de vous sensibiliser aux biais humains et à la manière dont nous percevons la proximité de la mort. Il est indéniable que la mort d'un enfant à l'autre bout du monde a généralement moins d'impact émotionnel que celle d'un enfant qui décède devant nos propres yeux. Bien que le résultat final soit la perte tragique de la vie d'un humainb, il peut sembler que la première situation soit plus ordinaire, et que nous ne nous sentions pas directement responsables. En revanche, dans la deuxième situation, où le décès est directement lié à nos choix ou à notre inaction, notre indifférence peut être perçue comme ayant contribué à un acte de violence, en plus des facteurs tels que la proximité physique. N'hésitez pas à partager cette expérience ou à faire un don à des ONG, voire à vous engager.</p>`;
+    <p>L'objectif ici n'est pas de vous accabler de culpabilité, mais plutôt de vous sensibiliser aux biais humains et à la manière dont nous percevons la proximité de la mort. Il est indéniable que la mort d'un enfant à l'autre bout du monde a généralement moins d'impact émotionnel que celle d'un enfant qui décède devant nos propres yeux. Bien que le résultat final soit la perte tragique de la vie d'un humain, il peut sembler que la première situation soit plus ordinaire, et que nous ne nous sentions pas directement responsables. En revanche, dans la deuxième situation, où le décès est directement lié à nos choix ou à notre inaction, notre indifférence peut être perçue comme ayant contribué à un acte de violence, en plus des facteurs tels que la proximité physique. N'hésitez pas à partager cette expérience ou à faire un don à des ONG, voire à vous engager.</p>`;
     textContainer.classList.add("fadein");
     sendMessage()
   }
