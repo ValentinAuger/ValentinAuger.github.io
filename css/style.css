@@ -500,42 +500,6 @@ h4, .h4, h3, .h3 {
     padding-top: 0px !important;
     padding-bottom: 0px !important; }
 
-/* Burger */
-.burger {
-  width: 28px;
-  height: 32px;
-  cursor: pointer;
-  position: relative; }
-
-.burger:before, .burger span, .burger:after {
-  width: 100%;
-  height: 2px;
-  display: block;
-  background: #000;
-  border-radius: 2px;
-  position: absolute;
-  opacity: 1; }
-
-.burger.light:before, .burger.light span, .burger.light:after {
-  background-color: #ffffff; }
-
-.burger:before, .burger:after {
-  -webkit-transition: top 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1), background-color 1.15s cubic-bezier(0.86, 0, 0.07, 1), -webkit-transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-  transition: top 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1), background-color 1.15s cubic-bezier(0.86, 0, 0.07, 1), -webkit-transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-  -o-transition: top 0.35s cubic-bezier(0.23, 1, 0.32, 1), transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1), background-color 1.15s cubic-bezier(0.86, 0, 0.07, 1);
-  transition: top 0.35s cubic-bezier(0.23, 1, 0.32, 1), transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1), background-color 1.15s cubic-bezier(0.86, 0, 0.07, 1);
-  transition: top 0.35s cubic-bezier(0.23, 1, 0.32, 1), transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1), background-color 1.15s cubic-bezier(0.86, 0, 0.07, 1), -webkit-transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-  -webkit-transition: top 0.35s cubic-bezier(0.23, 1, 0.32, 1), -webkit-transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1), background-color 1.15s cubic-bezier(0.86, 0, 0.07, 1);
-  content: ""; }
-
-.burger:before {
-  top: 4px; }
-
-.burger span {
-  top: 15px; }
-
-.burger:after {
-  top: 26px; }
 
 /* Hover */
 .burger:hover:before {
@@ -1694,6 +1658,13 @@ h4, .h4, h3, .h3 {
   @media (orientation: portrait) {
     #citation {
       display: none;
+    }
+    .site-nav h4{
+      font-size: medium;
+    }
+    .site-nav a{
+      font-size: medium;
+      padding-top: 5px;
     }
   }
   @media (min-width: 1250px) {
