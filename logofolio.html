@@ -33,6 +33,7 @@
   <title>Valentin AUGER</title>
 </head>
 <body>
+  <div class="conteneur">
   <div class="lines-wrap">
     <div class="lines-inner">
       <div class="lines"></div>
@@ -216,14 +217,28 @@
 <!--footer-->
 <div class="site-footer">
   <div class="container">
-      <div class="row justify-content-center text-center copyright">
-        <div class="col-md-8">
-          <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script></a>
-          </p>
-        </div>
+      <hr>
+      <div id="copyright">
+        <div>
+          <h3>valentinauger.fr</h3>
+          <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script></p>
+      </div></div>
+  
+      <div class="widget" id="footerflex">
+        <div>
+          <h4>Mes résaux :</h4>
+          <ul class="social list-unstyled">
+              <li><a href="https://www.instagram.com/ogvalentin/"><span class="icon-instagram"></span></a></li>
+              <li><a href="https://github.com/ValentinAuger"><span class="icon-github"></span></a></li>
+              <li><a href="https://www.behance.net/V-auger"><span class="icon-behance"></span></a></li>
+          </ul>
       </div>
-    </div>
+      <div >
+          <h4 id="citation">.</h4>
+      </div></div>
   </div>
+  </div>
+  <script src="./js/randomtext.js"></script>
 
 
   <div id="overlayer"></div>
@@ -259,6 +274,6 @@
 
   <script src="js/custom.js"></script>
 
-  
+</div>
 </body>
 </html>

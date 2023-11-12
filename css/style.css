@@ -7,9 +7,13 @@
 * Twitter: https://twitter.com/Untree_co
 * Facebook: https://web.facebook.com/Untree.co/
 */
+@font-face {
+  font-family: Drafting;
+  src: url(../font/Drafting.ttf);
+}
 
 body {
-  font-family: "Jost", sans-serif;
+  font-family: "Drafting", sans-serif;
   line-height: 1.5;
   font-size: 15px;
   color: #000000;
@@ -32,6 +36,11 @@ body {
     opacity: 1;
     visibility: visible; }
 
+.conteneur {
+      margin: 15px;
+      border: 2px solid black;
+      padding-left: 20px;padding-right: 20px;
+  }
 a {
   color: #000;
   -webkit-transition: .3s all ease;
@@ -41,9 +50,9 @@ a {
     color: #000;
     text-decoration: none; }
 
-h1, h2, h3, h4, h5 {
+h2, h3, h4, h5 {
   color: #000;
-  font-family: "Jost", sans-serif; }
+  font-family: "Drafting", serif; }
 
 h2{
   font-weight: 600;
@@ -66,7 +75,7 @@ a.text-primary {
 h1, .h1 {
   font-family: "Playfair Display", serif; }
 h4, .h4, h3, .h3 {
-  font-family: "Jost", serif;
+  font-family: "Drafting", serif; 
   font-weight: 300;
 }
 .btn {
@@ -162,7 +171,7 @@ h4, .h4, h3, .h3 {
 
 .logo {
   font-size: 25px;
-  font-family: "jost", sans-serif;
+  font-family: "Drafting", serif; 
   font-weight: regular; }
   .logo a {
     color: #000; }
@@ -1611,6 +1620,7 @@ h4, .h4, h3, .h3 {
     .site-footer {
       padding-top: 30px; } }
   .site-footer a {
+    font-family: "Drafting", serif;
     color: #000000; }
     .site-footer a:hover {
       color: #000; }
@@ -1658,3 +1668,69 @@ h4, .h4, h3, .h3 {
       content: "";
       height: 1px;
       background: #000000; }
+  .site-footer h4, h3{
+    font-family: "Playfair Display", serif;
+    font-weight: bold;
+  }
+  .site-footer  h3{
+    font-size: x-large;
+  }
+  .site-footer a{
+    font-size: large;
+  }
+  .site-footer #copyright{
+    size: 100vw;
+    display: flex;
+    justify-content: center;
+  }
+  .site-footer #copyright div{
+    text-align: center;
+  }
+
+  #citation{
+    width: 50vw;
+    margin-top: 15px;
+  }
+  @media (orientation: portrait) {
+    #citation {
+      display: none;
+    }
+  }
+  @media (min-width: 1250px) {
+    #citation {
+      width: 25vw;
+    }
+  }
+  @media (min-width: 3500px) {
+    #citation {
+      width: 12vw;
+    }
+  }
+  #footerflex{
+    display: flex;
+    justify-content: space-between;}
+  .site-footer hr{
+    border: #000;
+    border-width: 3px;
+    border-style: dashed hidden hidden hidden;
+
+  }
+
+#aboutme{
+  width: 1100px;
+}
+@media (min-width: 3500px) {
+  #citation {
+    width: 12vw;
+  }
+}
+
+#aboutmetexte{
+  width: 550px;
+}
+
+@media (max-width: 993.5px) {
+  #aboutmetexte {
+    width: auto;
+  }
+}

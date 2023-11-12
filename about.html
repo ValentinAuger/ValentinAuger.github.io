@@ -29,10 +29,21 @@
   <link rel="stylesheet" href="css/jquery.fancybox.min.css">
   <link rel="stylesheet" href="css/aos.css">
   <link rel="stylesheet" href="css/style.css">
-
+  <script> //download CV
+    function downloadPDF() {
+    var fileUrl = "CV.pdf";
+    var fileName = "CV_Valentin-AUGER";
+  
+    var a = document.createElement("a");
+    a.href = fileUrl;
+    a.download = fileName;
+    a.click();
+  }
+  </script>
   <title>Valentin AUGER</title>
 </head>
 <body>
+  <div class="conteneur">
   <div class="lines-wrap">
     <div class="lines-inner">
       <div class="lines"></div>
@@ -70,107 +81,53 @@
         <div class="col-lg-6">
           <h1 class="hero-heading">Qui suis-je</h1>
           <div class="line js-line mx-auto mb-3 my-3"></div>
-          <p id="randomPhrase" class="sub-text"></p>
+          <!--<p id="randomPhrase" class="sub-text"></p> -->
         </div>
       </div>
     </div>
   </div>
 
-<script>
-  // Liste de phrases à afficher
-  var phrases = [
-  "“Unless someone like you cares a whole awful lot, nothing is going to get better. It's not.” Le Lorax de Dr. Seuss",
-  "“In the long run, a hierarchical society was only possible on a basis of poverty and ignorance” 1984 de G.Orwell",
-  "“We know that no one ever seizes power with the intention of relinquishing it. Power is not a means, it's an end” 1984 de G.Orwell" ,
-  "“The masses never revolt of their own accord, and they never revolt merely because they are oppressed. Indeed, so long as they are not permitted to have standards of comparison, they never even become aware that they are oppressed.” 1984 de G.Orwell",
-  "“Bus stops are far more interesting and useful places to have art than in museums. Graffiti has more chance of meaning something or changing stuff than anything indoors.” Banksy",
-  "“When you go to an art gallery you are simply a tourist looking at the trophy cabinet of a few millionaires.” Banksy",
-  "“I just wanna make the world a better-looking place. If you don't like it, you can paint over it!” Banksy",
-  "“You don't need planning permission to build castles in the sky” Banksy",
-  "“There is nothing more dangerous than someone who wants to make the world a better place” Banksy",
-  "“I speak for the trees. I speak for the trees, for the trees have no tongues.” Le Lorax de Dr. Seuss",
-  "“Un nouveau paradis comme la CIA pour un savant fou trahi” Yonidas",
-  "“Maybe wars aren't meant to be won, maybe they're meant to be continuous.” Mr.Robot de Sam Esmail",
-  "“Power belongs to the people that take it. Nothing to do with their hard work, strong ambitions, or rightful qualifications, no. The actual will to take is often the only thing that’s necessary.” Mr.Robot de Sam Esmail",
-  "”ファシストになるより豚の方がマシさ” Porco Rosso de Hayao Miyazaki",
-  ];
+<div class="section aboutmesection">
+  <div style="display: flex;justify-content: center;">
+  <div id="aboutme">
+  <h2 class="mb-4">Un peu sur moi</h2>
+  <div class="line my-3"></div>
+  <div style="display: flex;"><p id="aboutmetexte">Je suis un lycéen passionné par l'art, le street art, la programmation, et la création artistique en général. Actuellement âgé de 17 ans et en année de terminal, j'ai pour ambition de poursuivre mes études dans une école de graphisme. Explorez mon univers créatif et suivez mon parcours alors que je me lance dans une nouvelle aventure artistique et professionnelle.</p></div>
 
-  // Fonction pour obtenir un index aléatoire
-  function getRandomIndex(max) {
-      return Math.floor(Math.random() * max);
-  }
-
-  // Fonction pour afficher une phrase aléatoire dans la balise <h3>
-  function displayRandomPhrase() {
-      var randomIndex = getRandomIndex(phrases.length);
-      var randomPhrase = phrases[randomIndex];
-      document.getElementById("randomPhrase").textContent = randomPhrase;
-  }
-
-  // Afficher une phrase aléatoire au chargement initial de la page
-  displayRandomPhrase();
-
-  // Ajouter un écouteur d'événement pour rafraîchir la phrase lors du rechargement de la page
-  window.addEventListener('load', displayRandomPhrase);
-</script>
-
-<div class="section">
-  <div class="container">
-    <div class="row justify-content-around align-items-center">
-      <div class="col-lg-6 order-lg-2">
-        <div class="image-stack-v2">
-          <div class="image-stack__item image-stack__item--top">
-            <div data-jarallax-element="-100" class="jarallax">
-              <img src="favicon.png" alt="Image" class="img-fluid">
-            </div>
-          </div>
-          <div class="image-stack__item image-stack__item--bottom">
-            <img src="images/ma-tete-2.jpg" alt="Image" class="img-fluid">
-          </div>
-        </div>
-
-
-      </div>
-      <div class="col-lg-4">
-
-        <h2 class="mb-4">Un peu sur moi</h2>
-        <div class="line my-3"></div>
-        <p>Je suis un lycéen passionné par l'art, le street art, la programmation, et la création artistique en général. Actuellement âgé de 17 ans et en année de terminal, j'ai pour ambition de poursuivre mes études dans une école de graphisme. Explorez mon univers créatif et suivez mon parcours alors que je me lance dans une nouvelle aventure artistique et professionnelle.</p>
-
-        <p>Merci de votre visite et n'hésitez pas à me contacter<br>
-        <a style="text-decoration: underline;" href="mailto:contact@valentinauger.fr">contact@valentinauger.fr</a></p>
-      </div>
-    </div>
-  </div>
+  <p>Merci de votre visite et n'hésitez pas à me contacter<br>
+  <a style="text-decoration: underline;" href="mailto:contact@valentinauger.fr">contact@valentinauger.fr</a></p>
+  <button class="btn btn-primary" onclick="downloadPDF()"><a>Téléchargez mon book</a></button>
 </div>
+</div>
+</div>
+
 
 
 <!-- footer -->
-
 <div class="site-footer">
   <div class="container">
-    <div class="row justify-content-between">
-      <div class="col-lg-4">
-        <div class="widget">
-          <h3>Mes reseaux :</h3>
+      <hr>
+      <div id="copyright">
+        <div>
+          <h3>valentinauger.fr</h3>
+          <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script></p>
+      </div></div>
+  
+      <div class="widget" id="footerflex">
+        <div>
+          <h4>Mes résaux :</h4>
           <ul class="social list-unstyled">
-            <li><a href="https://www.instagram.com/ogvalentin/"><span class="icon-instagram"></span></a></li>
-            <li><a href="https://github.com/ValentinAuger"><span class="icon-github"></span></a></li>
-            <li><a href="https://www.behance.net/V-auger"><span class="icon-behance"></span></a></li>
+              <li><a href="https://www.instagram.com/ogvalentin/"><span class="icon-instagram"></span></a></li>
+              <li><a href="https://github.com/ValentinAuger"><span class="icon-github"></span></a></li>
+              <li><a href="https://www.behance.net/V-auger"><span class="icon-behance"></span></a></li>
           </ul>
-        </div>
       </div>
-    </div>
-
-    <div class="row justify-content-center text-center copyright">
-      <div class="col-md-8">
-        <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> &mdash; Template by <a href="https://untree.co">Untree.co</a>
-        </p>
-      </div>
-    </div>
+      <div >
+          <h4 id="citation">.</h4>
+      </div></div>
   </div>
-</div>
-
+  </div>
+  <script src="./js/randomtext.js"></script>
 <!-- endfooter -->
 <div id="overlayer"></div>
 <div class="loader">
@@ -204,6 +161,6 @@
 
 
 <script src="js/custom.js"></script>
-
+</div>
   </body>
 </html>
