@@ -1705,3 +1705,17 @@ h4, .h4, h3, .h3 {
     width: auto;
   }
 }
+
+
+@media (max-width: 400px) {
+  .nav-link h4{
+    font-size:small ;
+  }
+  .logo a{
+    font-size:small ;
+  }
+}
+
+.nav-link a{
+  text-align: right;
+}
