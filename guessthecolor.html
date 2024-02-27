@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devine la couleur</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+    #container {
+        text-align: center;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    #colorsquare {
+        width: 150px;
+        height: 150px;
+        margin: 20px auto;
+        border-radius: 10px;
+    }
+    #colorsquare div {
+        width: 100%;
+        height: 100%;
+        background-color: inherit;
+        border-radius: 10px;
+    }
+    h1 {
+        margin-top: 3px;
+    }
+    input[type="number"] {
+        width: 50px;
+        padding: 5px;
+        margin: 5px;
+    }
+    button {
+        padding: 10px 20px;
+        margin-top: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Ajout de l'animation */
+    }
+    button:hover {
+        background-color: #0056b3; /* Changement de couleur au survol */
+    }
+    #message {
+        margin-top: 20px;
+        font-size: 18px;
+        display: none; /* Cacher le message initial */
+    }
+</style>
+</head>
+<body>
+
+<div id="container">
+    <h1>Devine la couleur</h1>
+    <div id="colorsquare"><div></div></div>
+    <label for="red">Rouge :</label>
+    <input type="number" id="red" name="red" min="0" max="255"><br>
+    <label for="green">Vert :</label>
+    <input type="number" id="green" name="green" min="0" max="255"><br>
+    <label for="blue">Bleu :</label>
+    <input type="number" id="blue" name="blue" min="0" max="255"><br>
+    <button onclick="checkColor()">Devine</button>
+    <!-- Modification pour afficher le message -->
+    <div id="message">
+        <!-- Première partie du message -->
+        <span id="firstPartMessage"></span>
+        <!-- Nouvelle ligne -->
+        <br>
+        <!-- "Tu as" + pourcentage d'erreur -->
+        Tu es à <span id="errorPercentage"></span>% de la couleur exacte !
+    </div>
+</div>
+
+<script>
+    const colorSquare = document.querySelector('#colorsquare > div');
+    const firstPartMessageSpan = document.getElementById('firstPartMessage');
+    const errorPercentageSpan = document.getElementById('errorPercentage');
+    const messageDiv = document.getElementById('message');
+
+    let correctGuesses = 0;
+    let totalGuesses = 0;
+
+    function getRandomColor() {
+        return '#' + Math.floor(Math.random()*16777215).toString(16);
+    }
+
+    function changeColor() {
+        colorSquare.style.backgroundColor = getRandomColor();
+    }
+
+    changeColor(); // Set initial random color
+
+    function checkColor() {
+        const red = parseInt(document.getElementById('red').value);
+        const green = parseInt(document.getElementById('green').value);
+        const blue = parseInt(document.getElementById('blue').value);
+
+        const guessedColor = `rgb(${red}, ${green}, ${blue})`;
+        const actualColor = colorSquare.style.backgroundColor;
+
+        totalGuesses++;
+
+        const similarityPercentage = calculateSimilarity(guessedColor, actualColor);
+
+        let firstPartMessage;
+
+        if (similarityPercentage > 98) {
+            firstPartMessage = "Parfait !";
+        } else if (similarityPercentage > 95) {
+            firstPartMessage = "Bravo !";
+        } else if (similarityPercentage > 90) {
+            firstPartMessage = "Asser bien !";
+        } else if (similarityPercentage > 75) {
+            firstPartMessage = "Tu y es presque !";
+        } else {
+            firstPartMessage = "Tu feras mieux la prochaine fois !";
+        }
+
+        // Afficher le message
+        messageDiv.style.display = 'block';
+
+        // Mise à jour du contenu des éléments
+        firstPartMessageSpan.textContent = firstPartMessage;
+        errorPercentageSpan.textContent = similarityPercentage.toFixed(2);
+
+        changeColor(); // Change color after submission
+    }
+
+    function calculateSimilarity(color1, color2) {
+        const actualRGB = extractRGB(color2);
+        const guessedRGB = extractRGB(color1);
+
+        if (!actualRGB || !guessedRGB) {
+            console.error('Failed to extract RGB values');
+            return 0;
+        }
+
+        const diffRed = Math.abs(actualRGB.red - guessedRGB.red);
+        const diffGreen = Math.abs(actualRGB.green - guessedRGB.green);
+        const diffBlue = Math.abs(actualRGB.blue - guessedRGB.blue);
+
+        const similarityRed = (1 - (diffRed / 255)) * 100;
+        const similarityGreen = (1 - (diffGreen / 255)) * 100;
+        const similarityBlue = (1 - (diffBlue / 255)) * 100;
+
+        const overallSimilarity = (similarityRed + similarityGreen + similarityBlue) / 3;
+
+        return overallSimilarity;
+    }
+
+    function extractRGB(color) {
+        if (!color) return null;
+
+        const match = color.match(/rgb\((\d+), (\d+), (\d+)\)/);
+
+        if (!match || match.length < 4) {
+            console.error('Failed to extract RGB values');
+            return null;
+        }
+
+        return {
+            red: parseInt(match[1], 10),
+            green: parseInt(match[2], 10),
+            blue: parseInt(match[3], 10)
+        };
+    }
+</script>
+
+</body>
+</html>
