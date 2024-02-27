@@ -21,7 +21,6 @@
         background-color: #fff;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        max-width: 90%; /* Ajustement de la largeur */
     }
     #colorsquare {
         width: 150px;
@@ -35,15 +34,19 @@
         background-color: inherit;
         border-radius: 10px;
     }
-    h1 {
-        margin-top: 3px;
+    input[type="number"], button {
+        margin-top: 10px;
     }
-    input[type="number"] {
-        width: 50px;
-        padding: 5px;
-        margin: 5px;
+    #message {
+        margin-top: 20px;
     }
-    button {
+    #mode{
+        position:absolute;
+        z-index:10;
+        top:15px;
+        left:15px;
+    }
+    #guess {
         padding: 10px 20px;
         margin-top: 10px;
         background-color: #007bff;
@@ -51,129 +54,166 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s ease; /* Ajout de l'animation */
+        transition: background-color 0.3s ease;
     }
-    button:hover {
-        background-color: #0056b3; /* Changement de couleur au survol */
+    #guess:hover {
+        background-color: #0056b3;
     }
-    #message {
-        margin-top: 20px;
-        font-size: 18px;
-        display: none; /* Cacher le message initial */
+    #mode {
+        background-color: #f0f0f0;
+        color: #b4b4b4;
+        border: none;
+        cursor: pointer;
     }
-
-    /* Médias queries pour les appareils mobiles */
-    @media (max-width: 600px) {
-        input[type="number"] {
-            width: 30%; /* Ajustement de la largeur */
-        }
+    #mode:hover {
+        color: #7c7c7c;
     }
 </style>
 </head>
 <body>
-
+<button id="mode" onclick="toggleColorMode()">Changer mode</button>
 <div id="container">
     <h1>Devine la couleur</h1>
     <div id="colorsquare"><div></div></div>
-    <label for="red">Rouge :</label>
-    <input type="number" id="red" name="red" min="0" max="255"><br>
-    <label for="green">Vert :</label>
-    <input type="number" id="green" name="green" min="0" max="255"><br>
-    <label for="blue">Bleu :</label>
-    <input type="number" id="blue" name="blue" min="0" max="255"><br>
-    <button onclick="checkColor()">Devine</button>
-    <!-- Modification pour afficher le message -->
-    <div id="message">
-        <!-- Première partie du message -->
-        <span id="firstPartMessage"></span>
-        <!-- Nouvelle ligne -->
-        <br>
-        <!-- "Tu as" + pourcentage d'erreur -->
-        Tu es à <span id="errorPercentage"></span>% de la couleur exacte !
-    </div>
+    <label for="color1">Rouge :</label>
+    <input type="number" id="color1" name="color1" min="0" max="255"><br>
+    <label for="color2">Vert :</label>
+    <input type="number" id="color2" name="color2" min="0" max="255"><br>
+    <label for="color3">Bleu :</label>
+    <input type="number" id="color3" name="color3" min="0" max="255"><br>
+    <label for="color4" id="labelForColor4" style="display:none;">Noir (K) :</label>
+    <input type="number" id="color4" name="color4" min="0" max="100" style="display:none;"><br>
+    <button id="guess" onclick="checkColor()">Devine</button>
+    <div id="message"></div>
 </div>
 
 <script>
+    let colorMode = 'RGB'; // Par défaut, le mode est réglé sur RGB
+    let currentColor = ''; // Stocke la couleur actuelle
+
     const colorSquare = document.querySelector('#colorsquare > div');
-    const firstPartMessageSpan = document.getElementById('firstPartMessage');
-    const errorPercentageSpan = document.getElementById('errorPercentage');
     const messageDiv = document.getElementById('message');
 
-    let correctGuesses = 0;
-    let totalGuesses = 0;
-
     function getRandomColor() {
-        return '#' + Math.floor(Math.random()*16777215).toString(16);
+        const randomRed = Math.floor(Math.random() * 256);
+        const randomGreen = Math.floor(Math.random() * 256);
+        const randomBlue = Math.floor(Math.random() * 256);
+        return `rgb(${randomRed}, ${randomGreen}, ${randomBlue})`;
     }
 
     function changeColor() {
-        colorSquare.style.backgroundColor = getRandomColor();
+        currentColor = getRandomColor(); // Met à jour la couleur actuelle
+        colorSquare.style.backgroundColor = currentColor;
     }
 
     changeColor(); // Set initial random color
 
-    function checkColor() {
-        const red = parseInt(document.getElementById('red').value);
-        const green = parseInt(document.getElementById('green').value);
-        const blue = parseInt(document.getElementById('blue').value);
-
-        const guessedColor = `rgb(${red}, ${green}, ${blue})`;
-        const actualColor = colorSquare.style.backgroundColor;
-
-        totalGuesses++;
-
-        const similarityPercentage = calculateSimilarity(guessedColor, actualColor);
-
-        let firstPartMessage;
-
-        if (similarityPercentage > 98) {
-            firstPartMessage = "Parfait !";
-        } else if (similarityPercentage > 95) {
-            firstPartMessage = "Bravo !";
-        } else if (similarityPercentage > 90) {
-            firstPartMessage = "Asser bien !";
-        } else if (similarityPercentage > 75) {
-            firstPartMessage = "Tu y es presque !";
+    function toggleColorMode() {
+        const labelForColor4 = document.getElementById('labelForColor4');
+        const inputForColor4 = document.getElementById('color4');
+        if (colorMode === 'RGB') {
+            colorMode = 'CMYK';
+            document.querySelector('label[for="color1"]').textContent = "Cyan :";
+            document.querySelector('label[for="color2"]').textContent = "Magenta :";
+            document.querySelector('label[for="color3"]').textContent = "Jaune :";
+            labelForColor4.style.display = "inline";
+            inputForColor4.style.display = "inline";
         } else {
-            firstPartMessage = "Tu feras mieux la prochaine fois !";
+            colorMode = 'RGB';
+            document.querySelector('label[for="color1"]').textContent = "Rouge :";
+            document.querySelector('label[for="color2"]').textContent = "Vert :";
+            document.querySelector('label[for="color3"]').textContent = "Bleu :";
+            labelForColor4.style.display = "none";
+            inputForColor4.style.display = "none";
+        }
+        changeColor();
+    }
+
+    function checkColor() {
+        let guessedColor, actualColor;
+
+        if (colorMode === 'RGB') {
+            const red = parseInt(document.getElementById('color1').value);
+            const green = parseInt(document.getElementById('color2').value);
+            const blue = parseInt(document.getElementById('color3').value);
+            guessedColor = `rgb(${red}, ${green}, ${blue})`;
+            actualColor = currentColor; // Utilise la couleur actuelle
+        } else {
+            const cyan = parseFloat(document.getElementById('color1').value) / 100;
+            const magenta = parseFloat(document.getElementById('color2').value) / 100;
+            const yellow = parseFloat(document.getElementById('color3').value) / 100;
+            const black = parseFloat(document.getElementById('color4').value) / 100;
+
+            const red = Math.round((1 - cyan) * (1 - black) * 255);
+            const green = Math.round((1 - magenta) * (1 - black) * 255);
+            const blue = Math.round((1 - yellow) * (1 - black) * 255);
+
+            guessedColor = `rgb(${red}, ${green}, ${blue})`;
+            actualColor = currentColor; // Utilise la couleur actuelle
         }
 
-        // Ajouter un saut de ligne entre la couleur et le premier message
-        firstPartMessage = "\n" + firstPartMessage;
-
-        // Récupérer la couleur actuelle sans le préfixe "rgb"
-        const actualColorWithoutRGB = actualColor.substring(4, actualColor.length - 1);
-
-        // Afficher le message
-        messageDiv.style.display = 'block';
-
-        // Mise à jour du contenu des éléments
-        firstPartMessageSpan.innerHTML = "La bonne couleur était : " + actualColorWithoutRGB + "<br>" + firstPartMessage;
-        errorPercentageSpan.textContent = similarityPercentage.toFixed(2);
-
-        changeColor(); // Change color after submission
+        const similarityPercentage = calculateSimilarity(guessedColor, actualColor);
+        displayResult(similarityPercentage);
+        changeColor(); // Change la couleur après avoir affiché le résultat
     }
 
     function calculateSimilarity(color1, color2) {
-        const actualRGB = extractRGB(color2);
-        const guessedRGB = extractRGB(color1);
+        if (colorMode === 'RGB') {
+            const actualRGB = extractRGB(color2);
+            const guessedRGB = extractRGB(color1);
 
-        if (!actualRGB || !guessedRGB) {
-            console.error('Failed to extract RGB values');
-            return 0;
+            if (!actualRGB || !guessedRGB) {
+                console.error('Failed to extract RGB values');
+                return 0;
+            }
+
+            const diffRed = Math.abs(actualRGB.red - guessedRGB.red);
+            const diffGreen = Math.abs(actualRGB.green - guessedRGB.green);
+            const diffBlue = Math.abs(actualRGB.blue - guessedRGB.blue);
+
+            const similarityRed = (1 - (diffRed / 255)) * 100;
+            const similarityGreen = (1 - (diffGreen / 255)) * 100;
+            const similarityBlue = (1 - (diffBlue / 255)) * 100;
+
+            const overallSimilarity = (similarityRed + similarityGreen + similarityBlue) / 3;
+
+            return overallSimilarity;
+        } else {
+            const actualRGB = extractRGB(color2);
+            const guessedCMYK = extractCMYK(color1);
+
+            if (!actualRGB || !guessedCMYK) {
+                console.error('Failed to extract values');
+                return 0;
+            }
+
+            // Convertir la couleur RGB actuelle en CMYK pour comparaison
+            const red = actualRGB.red / 255;
+            const green = actualRGB.green / 255;
+            const blue = actualRGB.blue / 255;
+
+            const black = Math.min(1 - red, 1 - green, 1 - blue);
+            const cyan = (1 - red - black) / (1 - black) || 0;
+            const magenta = (1 - green - black) / (1 - black) || 0;
+            const yellow = (1 - blue - black) / (1 - black) || 0;
+
+            const actualCMYK = {
+                cyan: Math.round(cyan * 100),
+                magenta: Math.round(magenta * 100),
+                yellow: Math.round(yellow * 100),
+                black: Math.round(black * 100)
+            };
+
+            // Comparaison de la couleur devinée CMYK avec la couleur réelle CMYK
+            const diffCyan = Math.abs(actualCMYK.cyan - guessedCMYK.cyan);
+            const diffMagenta = Math.abs(actualCMYK.magenta - guessedCMYK.magenta);
+            const diffYellow = Math.abs(actualCMYK.yellow - guessedCMYK.yellow);
+            const diffBlack = Math.abs(actualCMYK.black - guessedCMYK.black);
+
+            const overallSimilarity = 100 - ((diffCyan + diffMagenta + diffYellow + diffBlack) / 4);
+
+            return overallSimilarity;
         }
-
-        const diffRed = Math.abs(actualRGB.red - guessedRGB.red);
-        const diffGreen = Math.abs(actualRGB.green - guessedRGB.green);
-        const diffBlue = Math.abs(actualRGB.blue - guessedRGB.blue);
-
-        const similarityRed = (1 - (diffRed / 255)) * 100;
-        const similarityGreen = (1 - (diffGreen / 255)) * 100;
-        const similarityBlue = (1 - (diffBlue / 255)) * 100;
-
-        const overallSimilarity = (similarityRed + similarityGreen + similarityBlue) / 3;
-
-        return overallSimilarity;
     }
 
     function extractRGB(color) {
@@ -192,6 +232,61 @@
             blue: parseInt(match[3], 10)
         };
     }
+
+    function extractCMYK(color) {
+        if (!color) return null;
+
+        // Convertir la couleur RGB en CMYK
+        const rgb = extractRGB(color);
+        const red = rgb.red / 255;
+        const green = rgb.green / 255;
+        const blue = rgb.blue / 255;
+
+        const black = Math.min(1 - red, 1 - green, 1 - blue);
+        const cyan = (1 - red - black) / (1 - black) || 0;
+        const magenta = (1 - green - black) / (1 - black) || 0;
+        const yellow = (1 - blue - black) / (1 - black) || 0;
+
+        return {
+            cyan: Math.round(cyan * 100),
+            magenta: Math.round(magenta * 100),
+            yellow: Math.round(yellow * 100),
+            black: Math.round(black * 100)
+        };
+    }
+
+function displayResult(similarityPercentage) {
+    let firstPartMessage;
+    let actualColorString;
+
+    if (colorMode === 'RGB') {
+        actualColorString = currentColor.substring(4, currentColor.length - 1);
+    } else {
+        const cmyk = extractCMYK(currentColor);
+        actualColorString = `C: ${cmyk.cyan}%, M: ${cmyk.magenta}%, Y: ${cmyk.yellow}%, K: ${cmyk.black}%`;
+    }
+
+    if (similarityPercentage > 98) {
+        firstPartMessage = "Parfait !";
+    } else if (similarityPercentage > 95) {
+        firstPartMessage = "Bravo !";
+    } else if (similarityPercentage > 90) {
+        firstPartMessage = "Assez bien !";
+    } else if (similarityPercentage > 75) {
+        firstPartMessage = "Tu y es presque !";
+    } else {
+        firstPartMessage = "Tu feras mieux la prochaine fois !";
+    }
+
+    // Ajouter un saut de ligne entre "La bonne couleur était : " et le code couleur
+    const message = "La bonne couleur était : \n" + actualColorString + "\n" + firstPartMessage + "\nTu es à " + similarityPercentage.toFixed(2) + "% de la couleur exacte...";
+
+    // Afficher le message
+    messageDiv.style.whiteSpace = "pre-line";
+    messageDiv.textContent = message;
+    messageDiv.style.display = "block";
+}
+
 </script>
 
 </body>
