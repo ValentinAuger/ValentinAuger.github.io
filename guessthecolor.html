@@ -21,6 +21,7 @@
         background-color: #fff;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 90%; /* Ajustement de la largeur */
     }
     #colorsquare {
         width: 150px;
@@ -60,6 +61,13 @@
         font-size: 18px;
         display: none; /* Cacher le message initial */
     }
+
+    /* Médias queries pour les appareils mobiles */
+    @media (max-width: 600px) {
+        input[type="number"] {
+            width: 30%; /* Ajustement de la largeur */
+        }
+    }
 </style>
 </head>
 <body>
@@ -81,7 +89,7 @@
         <!-- Nouvelle ligne -->
         <br>
         <!-- "Tu as" + pourcentage d'erreur -->
-        Tu a <span id="errorPercentage"></span>% de la couleur exacte !
+        Tu es à <span id="errorPercentage"></span>% de la couleur exacte !
     </div>
 </div>
 
@@ -130,11 +138,17 @@
             firstPartMessage = "Tu feras mieux la prochaine fois !";
         }
 
+        // Ajouter un saut de ligne entre la couleur et le premier message
+        firstPartMessage = "\n" + firstPartMessage;
+
+        // Récupérer la couleur actuelle sans le préfixe "rgb"
+        const actualColorWithoutRGB = actualColor.substring(4, actualColor.length - 1);
+
         // Afficher le message
         messageDiv.style.display = 'block';
 
         // Mise à jour du contenu des éléments
-        firstPartMessageSpan.textContent = firstPartMessage;
+        firstPartMessageSpan.innerHTML = "La bonne couleur était : " + actualColorWithoutRGB + "<br>" + firstPartMessage;
         errorPercentageSpan.textContent = similarityPercentage.toFixed(2);
 
         changeColor(); // Change color after submission
