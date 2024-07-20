@@ -15,6 +15,7 @@
   "“Maybe wars aren't meant to be won, maybe they're meant to be continuous.” Mr.Robot de Sam Esmail",
   "“Power belongs to the people that take it. Nothing to do with their hard work, strong ambitions, or rightful qualifications, no. The actual will to take is often the only thing that’s necessary.” Mr.Robot de Sam Esmail",
   "”ファシストになるより豚の方がマシさ” Porco Rosso de Hayao Miyazaki",
+  "“Un peu plus proche des gens aux bras scarifiés que des gens populaires du bahut” Jyeuhair",
   ];
 
   // Fonction pour obtenir un index aléatoire
