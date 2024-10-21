@@ -16,6 +16,8 @@
   "“Power belongs to the people that take it. Nothing to do with their hard work, strong ambitions, or rightful qualifications, no. The actual will to take is often the only thing that’s necessary.” Mr.Robot de Sam Esmail",
   "”ファシストになるより豚の方がマシさ” Porco Rosso de Hayao Miyazaki",
   "“Un peu plus proche des gens aux bras scarifiés que des gens populaires du bahut” Jyeuhair",
+  "“Whats the point of being rich when you wake up alone” Tyler, The Creator",
+  "“If the world was ending, I think I would grab some Cinnamon Toast Crunch, a bunch of water, and I'd probably just... I'd probably go crazy” Tyler, The Creator",
   ];
 
   // Fonction pour obtenir un index aléatoire
