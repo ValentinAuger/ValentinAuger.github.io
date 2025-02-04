@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,490&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,700;1,700&display=swap');
 body {
-    font-family: "comicsansms", sans-serif;
+    font-family: "Comic Neue", sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f9;
@@ -23,7 +24,7 @@ body {
 
 .text-center p {
     font-size: 1.5em;
-    color: #333;
+    color: #161616;
     margin: 20px 0;
 }
 
