@@ -18,6 +18,7 @@
   "“Un peu plus proche des gens aux bras scarifiés que des gens populaires du bahut” Jyeuhair",
   "“Whats the point of being rich when you wake up alone” Tyler, The Creator",
   "“If the world was ending, I think I would grab some Cinnamon Toast Crunch, a bunch of water, and I'd probably just... I'd probably go crazy” Tyler, The Creator",
+  "“Les vieux d'mon âge pensent que l'bonheur est dans un caddie à Darty, que l'art est dans les galeries à Paris” Hugo TSR"
   ];
 
   // Fonction pour obtenir un index aléatoire
