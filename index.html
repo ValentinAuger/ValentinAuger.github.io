@@ -1,452 +1,91 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="author" content="VALENTIN AUGER">
-  <meta name="description" content="Je suis un lycéen passionné par l'art, le street art, la programmation, et la création artistique en général. Actuellement âgé de 17 ans et en année de terminal, j'ai pour ambition de poursuivre mes études dans une école de graphisme. Explorez mon univers créatif et suivez mon parcours alors que je me lance dans une nouvelle aventure artistique et professionnelle." />
-  <link rel="shortcut icon" href="favicon.png">
-  <link rel="stylesheet" href="https://indestructibletype.com/fonts/Jost.css" type="text/css" charset="utf-8" />
-  <script> //download PDF
-    function downloadPDF() {
-    var fileUrl = "book.pdf";
-    var fileName = "book_Valentin-AUGER";
-  
-    var a = document.createElement("a");
-    a.href = fileUrl;
-    a.download = fileName;
-    a.click();
-  }
-  </script>
+  <meta charset="UTF-8">
+  <title>Image interactive</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
+    }
 
+    #img-phone {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain
+    }
 
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/animate.min.css">
-  <link rel="stylesheet" href="css/owl.carousel.min.css">
-  <link rel="stylesheet" href="css/owl.theme.default.min.css">
-  <link rel="stylesheet" href="fonts/icomoon/style.css">
-  <link rel="stylesheet" href="fonts/feather/style.css">
-  <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
-  <link rel="stylesheet" href="css/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="css/aos.css">
-  <link rel="stylesheet" href="css/style.css">
+    #img-desktop {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90%;
+      max-height: 90%;
+      cursor: grab;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
 
-  <title>Valentin AUGER</title>
+    @media (max-width: 768px) {
+      #img-phone {
+        display: block;
+      }
+    }
+
+    @media (min-width: 769px) {
+      #img-desktop {
+        display: block;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="conteneur">
-  <div class="lines-wrap">
-    <div class="lines-inner">
-      <div class="lines"></div>
-    </div>
-  </div>
-  <!-- END lines -->
+  <img id="img-phone" src="imgphone.png" alt="Image téléphone">
+  <img id="img-desktop" src="img.png" alt="Image ordinateur">
 
-  <div class="site-mobile-menu site-navbar-target">
-    <div class="site-mobile-menu-header">
-      <div class="site-mobile-menu-close">
-        <span class="icofont-close js-menu-toggle"></span>
-      </div>
-    </div>
-    <div class="site-mobile-menu-body"></div>
-  </div>
+  <script>
+    const img = document.getElementById('img-desktop');
+    let isDragging = false;
+    let offset = { x: 0, y: 0 };
 
-<!-- header -->
-  <nav class="site-nav">
-    <div class="container">
-      <div class="site-navigation">
-        <a class="logo float-left m-0">Valentin AUGER<span class="text-primary"></span></a>
+    // Changement de l'image au survol
+    img.addEventListener('mouseenter', () => {
+      img.src = 'img2.png';
+    });
 
-        <ul class="nav item justify-content-end">
-          <li class="nav-link"> <a href="https://www.valentinauger.fr/logofolio"><h4>Logofolio</h4></a></li>
-          <li class="nav-link"> <a href="https://www.valentinauger.fr/about"><h4>Qui suis-je</h4></a></li>
-        </ul>
+    img.addEventListener('mouseleave', () => {
+      img.src = 'img.png';
+    });
 
-      </div>
-    </div>
-  </nav>
-<!-- end header -->
+    // Déplacement avec clic maintenu
+    img.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      offset.x = e.clientX - img.offsetLeft;
+      offset.y = e.clientY - img.offsetTop;
+      img.style.cursor = 'grabbing';
+    });
 
-  <div class="custom-hero">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-6">
-          <h1 class="hero-heading">Portfolio</h1>
-          <div  class="line js-line mx-auto mb-3 my-3"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+    document.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        img.style.left = (e.clientX - offset.x) + 'px';
+        img.style.top = (e.clientY - offset.y) + 'px';
+        img.style.transform = 'none';
+      }
+    });
 
-  <div class="site-section" id="portfolio-section">
-    <div class="container">
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      img.style.cursor = 'grab';
+    });
 
-      <div class="filters" data-aos="fade-up" data-aos-delay="100">
-        <ul>
-          <li class="active" data-filter="*">Tout</li>
-          <li data-filter=".logofolio">Logo</li>
-          <li data-filter=".poster">Poster</li>
-          <li data-filter=".photo">Photographie</li>
-        </ul>
-      </div>
-
-<!--Debut des imgs-->
-      
-      <div class="filters-content mb-5" data-aos="fade-up" data-aos-delay="200">
-        <div class="row grid">
-
-          <div class="isotope-card col-sm-4 all logofolio">
-            <a href="images/ody2.jpg" data-fancybox="gal">
-              <img src="images/ody2.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Orchestre Departemental de l'Yonne</h3>
-                <div class="cat">Logo</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all poster">
-            <a href="images/befree.png" data-fancybox="gal">
-              <img src="images/befree.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Be Free v.1</h3>
-                <div class="cat">Poster</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all poster">
-            <a href="images/befree2.png" data-fancybox="gal">
-              <img src="images/befree2.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Be Free v.2</h3>
-                <div class="cat">Poster</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all logofolio">
-            <a href="images/paletfut.jpg" data-fancybox="gal">
-              <img src="images/paletfut.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Paletfut</h3>
-                <div class="cat">logo</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all poster">
-            <a href="images/y2k.png" data-fancybox="gal">
-              <img src="images/y2k.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Nike Y2k</h3>
-                <div class="cat">Poster</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all illustration">
-            <a href="images/overthrone.jpg" data-fancybox="gal">
-              <img src="images/overthrone.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Overthrone</h3>
-                <div class="cat">Illusration</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all logofolio">
-            <a href="images/greensteps.jpg" data-fancybox="gal">
-              <img src="images/greensteps.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Green Steps</h3>
-                <div class="cat">Logo</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all poster">
-            <a href="images/art.png" data-fancybox="gal">
-              <img src="images/art.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Art is my means of expression</h3>
-                <div class="cat">Poster</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all photo">
-            <a href="images/watch.jpg" data-fancybox="gal">
-              <img src="images/watch.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>T-shirt n°1</h3>
-                <div class="cat">Streetwear</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all">
-            <a href="images/packaging.png" data-fancybox="gal">
-              <img src="images/packaging.png" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Packaging</h3>
-                <div class="cat">Streetwear</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all photo">
-            <a href="images/glacier.png" data-fancybox="gal">
-              <img src="images/glacier.png" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Jökulsárlón</h3>
-                <div class="cat">Photographie</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all poster">
-            <a href="images/calendrier.jpg" data-fancybox="gal">
-              <img src="images/calendrier.png" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Himekuri,ひめくり</h3>
-                <div class="cat">Poster</div>
-              </div>
-            </a>
-          </div>
-                    
-          <div class="isotope-card col-sm-4 all photo">
-            <a href="images/Remontéecompressed.jpg" data-fancybox="gal">
-              <img src="images/Remontée.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>L'appel de la montagne, ciel</h3>
-                <div class="cat">Photographie</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all tatoo">
-            <a href="images/tatoo.jpg" data-fancybox="gal">
-              <img src="images/tatoo.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Tortue martiniquaise</h3>
-                <div class="cat">Tatouage</div>
-              </div>
-            </a>
-          </div>
-          
-          <div class="isotope-card col-sm-4 all photo">
-            <a href="images/Auréliencompressd.jpg" data-fancybox="gal">
-              <img src="images/Aurélien.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>L'appel de la montagne, sol</h3>
-                <div class="cat">Photographie</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all poster">
-            <a href="images/pride.png" data-fancybox="gal">
-              <img src="images/pride.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Pride</h3>
-                <div class="cat">Poster</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all illustration">
-            <a href="images/drawnuage.jpg" data-fancybox="gal">
-              <img src="images/drawnuage.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Nuage n°3</h3>
-                <div class="cat">Illustration</div>
-              </div>
-            </a>
-          </div>
-
-                              
-          <div class="isotope-card col-sm-4 all photo">
-            <a href="images/Auverscompressed.jpg" data-fancybox="gal">
-              <img src="images/Auverscompressed.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Auvers sous la neige</h3>
-                <div class="cat">Photographie</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all photo">
-            <a href="images/orchestre.png" data-fancybox="gal">
-              <img src="images/orchestre.png" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Cuivres</h3>
-                <div class="cat">Photographie</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all poster">
-            <a href="images/starwars.png" data-fancybox="gal">
-              <img src="images/starwars.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Star Wars</h3>
-                <div class="cat">Poster</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all photo">
-            <a href="images/crash.jpg" data-fancybox="gal">
-              <img src="images/crash.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>63°28'29"N 19°22'07"W</h3>
-                <div class="cat">Photographie</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all logofolio">
-            <a href="images/fatsheep.jpg" data-fancybox="gal">
-              <img src="images/fatsheep.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Fat Sheep</h3>
-                <div class="cat">Logo</div>
-              </div>
-            </a>
-          </div>
-          
-          <div class="isotope-card col-sm-4 all poster">
-            <a href="images/1984.png" data-fancybox="gal">
-              <img src="images/84.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>1984</h3>
-                <div class="cat">Poster</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all photo">
-            <a href="images/iceberg.jpg" data-fancybox="gal">
-              <img src="images/iceberg.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Growler</h3>
-                <div class="cat">Photographie</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all poster">
-            <a href="images/reel.jpg" data-fancybox="gal">
-              <img src="images/reel.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Are You Real ?</h3>
-                <div class="cat">Poster</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all logofolio">
-            <a href="images/olympe.jpg" data-fancybox="gal">
-              <img src="images/olympe.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Olympe</h3>
-                <div class="cat">Logo</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="isotope-card col-sm-4 all logofolio">
-            <a href="images/bonjourmonde.jpg" data-fancybox="gal">
-              <img src="images/bonjourmonde.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Bonjour Monde</h3>
-                <div class="cat">Logo</div>
-              </div>
-            </a>
-          </div>
-
-          
-          <div class="isotope-card col-sm-4 all photo">
-            <a href="images/glacier2.jpg" data-fancybox="gal">
-              <img src="images/glacier2.jpg" alt="Image" class="img-fluid">
-              <div class="contents">
-                <h3>Jökulsárlón</h3>
-                <div class="cat">Photographie</div>
-              </div>
-            </a>
-          </div>
-
-        </div>
-      </div>
-      <div class="row justify-content-center"><button class="btn btn-primary" onclick="downloadPDF()"><a>Téléchargez mon book</a></button></div>
-    </div>
-  </div>
-
-<!-- footer -->
-<div class="site-footer">
-  <div class="container">
-      <hr>
-      <div id="copyright">
-        <div>
-          <h3>valentinauger.fr</h3>
-          <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script></p>
-      </div></div>
-  
-      <div class="widget" id="footerflex">
-        <div>
-          <h4>Mes résaux :</h4>
-          <ul class="social list-unstyled">
-              <li><a href="https://www.instagram.com/ogvalentin/"><span class="icon-instagram"></span></a></li>
-              <li><a href="https://github.com/ValentinAuger"><span class="icon-github"></span></a></li>
-              <li><a href="https://www.behance.net/V-auger"><span class="icon-behance"></span></a></li>
-          </ul>
-      </div>
-      <div >
-          <h4 id="citation">.</h4>
-      </div></div>
-  </div>
-  </div>
-  <script src="./js/randomtext.js"></script>
-<!-- endfooter -->
-
-
-  <div id="overlayer"></div>
-  <div class="loader">
-    <div class="spinner-border" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </div>
-
-  <script src="js/jquery-3.5.1.min.js"></script>
-  <script src="js/jquery-migrate-3.0.0.min.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/owl.carousel.min.js"></script>
-  <script src="js/aos.js"></script>
-  <script src="js/imagesloaded.pkgd.js"></script>
-  <script src="js/isotope.pkgd.min.js"></script>
-  <script src="js/jquery.animateNumber.min.js"></script>
-  <script src="js/jquery.stellar.min.js"></script>
-  <script src="js/jarallax.min.js"></script>
-  <script src="js/jarallax-element.min.js"></script>
-  <script src="js/jquery.waypoints.min.js"></script>
-  <script src="js/jquery.fancybox.min.js"></script>
-
-  <script src="js/jquery.lettering.js"></script>
-
-
-  <script src="js/TweenMax.min.js"></script>
-  <script src="js/ScrollMagic.min.js"></script>
-  <script src="js/scrollmagic.animation.gsap.min.js"></script>
-  <script src="js/debug.addIndicators.min.js"></script>
-
-
-  <script src="js/custom.js"></script>
-
-</div>
+    // Désactive le comportement de drag natif de l'image
+    img.ondragstart = () => false;
+  </script>
 </body>
 </html>
