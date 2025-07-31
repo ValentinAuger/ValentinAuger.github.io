@@ -9,39 +9,26 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background-color: #000;
+      background-color: #262626;
+    }
+
+    img {
+      display: none;
+      position: absolute;
     }
 
     #img-phone {
-      display: none;
       width: 100vw;
       height: 100vh;
-      object-fit: contain
+      object-fit: contain;
+      background-color: #000;
+      position: fixed;
     }
 
     #img-desktop {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       max-width: 90%;
       max-height: 90%;
       cursor: grab;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    @media (max-width: 768px) {
-      #img-phone {
-        display: block;
-      }
-    }
-
-    @media (min-width: 769px) {
-      #img-desktop {
-        display: block;
-      }
     }
   </style>
 </head>
@@ -50,42 +37,61 @@
   <img id="img-desktop" src="img.png" alt="Image ordinateur">
 
   <script>
-    const img = document.getElementById('img-desktop');
-    let isDragging = false;
-    let offset = { x: 0, y: 0 };
+    const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
+    const phoneImg = document.getElementById('img-phone');
+    const desktopImg = document.getElementById('img-desktop');
 
-    // Changement de l'image au survol
-    img.addEventListener('mouseenter', () => {
-      img.src = 'img2.png';
-    });
+    if (isMobile) {
+      // Affiche l'image mobile
+      phoneImg.style.display = 'block';
+    } else {
+      // Affiche l'image desktop
+      desktopImg.style.display = 'block';
 
-    img.addEventListener('mouseleave', () => {
-      img.src = 'img.png';
-    });
+      // Centre l'image à l'affichage
+      window.addEventListener('load', () => {
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+        const imgW = desktopImg.offsetWidth;
+        const imgH = desktopImg.offsetHeight;
+        desktopImg.style.left = (winW - imgW) / 2 + 'px';
+        desktopImg.style.top = (winH - imgH) / 2 + 'px';
+      });
 
-    // Déplacement avec clic maintenu
-    img.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      offset.x = e.clientX - img.offsetLeft;
-      offset.y = e.clientY - img.offsetTop;
-      img.style.cursor = 'grabbing';
-    });
+      // Hover → change l'image
+      desktopImg.addEventListener('mouseenter', () => {
+        desktopImg.src = 'img2.png';
+      });
 
-    document.addEventListener('mousemove', (e) => {
-      if (isDragging) {
-        img.style.left = (e.clientX - offset.x) + 'px';
-        img.style.top = (e.clientY - offset.y) + 'px';
-        img.style.transform = 'none';
-      }
-    });
+      desktopImg.addEventListener('mouseleave', () => {
+        desktopImg.src = 'img.png';
+      });
 
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      img.style.cursor = 'grab';
-    });
+      // Déplacement à la souris
+      let isDragging = false;
+      let offset = { x: 0, y: 0 };
 
-    // Désactive le comportement de drag natif de l'image
-    img.ondragstart = () => false;
+      desktopImg.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offset.x = e.clientX - desktopImg.offsetLeft;
+        offset.y = e.clientY - desktopImg.offsetTop;
+        desktopImg.style.cursor = 'grabbing';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          desktopImg.style.left = (e.clientX - offset.x) + 'px';
+          desktopImg.style.top = (e.clientY - offset.y) + 'px';
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        desktopImg.style.cursor = 'grab';
+      });
+
+      desktopImg.ondragstart = () => false;
+    }
   </script>
 </body>
 </html>
