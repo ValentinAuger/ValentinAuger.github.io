@@ -4,17 +4,34 @@
   <meta charset="UTF-8">
   <title>Mur de messages</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 </head>
 <body>
   <h1>Mur de messages</h1>
-  <script>
-    function afficherMessages() {
-      const container = document.getElementById("messages");
-      container.innerHTML = "";
+  <div id="messages">Chargement...</div>
 
-      const messages = JSON.parse(localStorage.getItem("messages") || "[]");
+  <h2>Ajouter un message</h2>
+  <p><a href="jam.html">Accéder au formulaire</a></p>
+  <canvas id="qrcode"></canvas>
+  <button onclick="afficherMessages()">🔄 Rafraîchir</button>
+
+  <script>
+    const API_URL = "https://api.jsonbin.io/v3/b/68d7f48943b1c97be9520d19/latest";
+    const API_KEY = "$2a$10$q1i..XKCzCiJD3PB2CkpZekd5JELUiJJd/byW6PYaU7yItZzvbemy";
+
+    async function afficherMessages() {
+      const container = document.getElementById("messages");
+      container.innerHTML = "Chargement...";
+
+      const res = await fetch(API_URL, {
+        headers: { "X-Master-Key": API_KEY }
+      });
+      const data = await res.json();
+      const messages = data.record || [];
+
+      container.innerHTML = "";
       if (messages.length === 0) {
-        container.innerHTML = "<p>Aucun message pour le moment.</p>";
+        container.innerHTML = "<p>Aucun message.</p>";
         return;
       }
 
@@ -25,7 +42,6 @@
         if (msg.type === "image") {
           const img = document.createElement("img");
           img.src = msg.content;
-          img.alt = "Image ajoutée";
           div.appendChild(img);
         } else {
           div.textContent = msg.content;
@@ -35,7 +51,19 @@
       });
     }
 
-    window.onload = afficherMessages;
+    function genererQRCode() {
+      const url = window.location.origin + "/jam.html";
+      new QRious({
+        element: document.getElementById("qrcode"),
+        value: url,
+        size: 200
+      });
+    }
+
+    window.onload = () => {
+      afficherMessages();
+      genererQRCode();
+    };
   </script>
 </body>
 </html>
