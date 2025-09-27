@@ -10,10 +10,8 @@
   <h1>Mur de messages</h1>
   <div id="messages">Chargement...</div>
 
-  <h2>Ajouter un message</h2>
-  <p><a href="jam.html">Accéder au formulaire</a></p>
+  <a href="jam.html">Ajouter un message</a>
   <canvas id="qrcode"></canvas>
-  <button onclick="afficherMessages()">🔄 Rafraîchir</button>
 
   <script>
     const API_URL = "https://api.jsonbin.io/v3/b/68d7f48943b1c97be9520d19/latest";
@@ -23,32 +21,36 @@
       const container = document.getElementById("messages");
       container.innerHTML = "Chargement...";
 
-      const res = await fetch(API_URL, {
-        headers: { "X-Master-Key": API_KEY }
-      });
-      const data = await res.json();
-      const messages = data.record || [];
+      try {
+        const res = await fetch(API_URL, {
+          headers: { "X-Master-Key": API_KEY }
+        });
+        const data = await res.json();
+        const messages = data.record || [];
 
-      container.innerHTML = "";
-      if (messages.length === 0) {
-        container.innerHTML = "<p>Aucun message.</p>";
-        return;
-      }
-
-      messages.forEach(msg => {
-        const div = document.createElement("div");
-        div.className = "message";
-
-        if (msg.type === "image") {
-          const img = document.createElement("img");
-          img.src = msg.content;
-          div.appendChild(img);
-        } else {
-          div.textContent = msg.content;
+        container.innerHTML = "";
+        if (messages.length === 0) {
+          container.innerHTML = "<p>Aucun message.</p>";
+          return;
         }
 
-        container.appendChild(div);
-      });
+        messages.forEach(msg => {
+          const div = document.createElement("div");
+          div.className = "message";
+
+          if (msg.type === "image") {
+            const img = document.createElement("img");
+            img.src = msg.content;
+            div.appendChild(img);
+          } else {
+            div.textContent = msg.content;
+          }
+
+          container.appendChild(div);
+        });
+      } catch (err) {
+        container.innerHTML = "<p>Erreur de chargement des messages.</p>";
+      }
     }
 
     function genererQRCode() {
@@ -56,13 +58,14 @@
       new QRious({
         element: document.getElementById("qrcode"),
         value: url,
-        size: 200
+        size: 150
       });
     }
 
     window.onload = () => {
       afficherMessages();
       genererQRCode();
+      setInterval(afficherMessages, 5000); // auto-refresh toutes les 5 secondes
     };
   </script>
 </body>
