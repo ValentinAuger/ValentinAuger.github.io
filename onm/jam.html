@@ -8,36 +8,45 @@
 <body>
   <h1>Ajouter un message</h1>
   <form id="messageForm">
-    <label>
-      Type :
-      <select id="type">
-        <option value="text">Texte</option>
-        <option value="image">Image (URL)</option>
-      </select>
-    </label>
-    <br><br>
-    <label>
-      Contenu :
-      <input type="text" id="content" required>
-    </label>
-    <br><br>
+    <input type="text" id="content" placeholder="Texte ou URL d'image" required>
     <button type="submit">Ajouter</button>
   </form>
 
-  <p><a href="index.html">Retour aux messages</a></p>
+  <p><a href="print.html">Retour aux messages</a></p>
 
   <script>
-    document.getElementById("messageForm").addEventListener("submit", function(e) {
+    const API_URL = "https://api.jsonbin.io/v3/b/68d7f48943b1c97be9520d19";
+    const API_KEY = "$2a$10$q1i..XKCzCiJD3PB2CkpZekd5JELUiJJd/byW6PYaU7yItZzvbemy";
+
+    async function fetchMessages() {
+      const res = await fetch(API_URL + "/latest", {
+        headers: { "X-Master-Key": API_KEY }
+      });
+      const data = await res.json();
+      return data.record || [];
+    }
+
+    function detectType(content) {
+      const imageRegex = /\.(jpeg|jpg|png|gif|webp|svg)$/i;
+      return imageRegex.test(content) ? "image" : "text";
+    }
+
+    document.getElementById("messageForm").addEventListener("submit", async e => {
       e.preventDefault();
-
-      const type = document.getElementById("type").value;
       const content = document.getElementById("content").value.trim();
-
       if (!content) return;
 
-      const messages = JSON.parse(localStorage.getItem("messages") || "[]");
-      messages.push({ type, content });
-      localStorage.setItem("messages", JSON.stringify(messages));
+      const messages = await fetchMessages();
+      messages.push({ type: detectType(content), content });
+
+      await fetch(API_URL, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": API_KEY
+        },
+        body: JSON.stringify(messages)
+      });
 
       document.getElementById("content").value = "";
       alert("Message ajouté !");
