@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajouter un message</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Ajouter un message</h1>
+  <form id="messageForm">
+    <label>
+      Type :
+      <select id="type">
+        <option value="text">Texte</option>
+        <option value="image">Image (URL)</option>
+      </select>
+    </label>
+    <br><br>
+    <label>
+      Contenu :
+      <input type="text" id="content" required>
+    </label>
+    <br><br>
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <p><a href="index.html">Retour aux messages</a></p>
+
+  <script>
+    document.getElementById("messageForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const type = document.getElementById("type").value;
+      const content = document.getElementById("content").value.trim();
+
+      if (!content) return;
+
+      const messages = JSON.parse(localStorage.getItem("messages") || "[]");
+      messages.push({ type, content });
+      localStorage.setItem("messages", JSON.stringify(messages));
+
+      document.getElementById("content").value = "";
+      alert("Message ajouté !");
+    });
+  </script>
+</body>
+</html>

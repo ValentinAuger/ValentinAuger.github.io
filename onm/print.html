@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajouter un message</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Ajouter un message</h1>
+  <form id="messageForm">
+    <label>
+      Contenu :
+      <input type="text" id="content" placeholder="Écris un texte ou colle une URL d'image" required>
+    </label>
+    <br><br>
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <p><a href="index.html">Retour aux messages</a></p>
+
+  <script>
+    function detectType(content) {
+      const imageRegex = /\.(jpeg|jpg|png|gif|webp|svg)$/i;
+      return imageRegex.test(content) ? "image" : "text";
+    }
+
+    document.getElementById("messageForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const content = document.getElementById("content").value.trim();
+      if (!content) return;
+
+      const type = detectType(content);
+      const messages = JSON.parse(localStorage.getItem("messages") || "[]");
+      messages.push({ type, content });
+      localStorage.setItem("messages", JSON.stringify(messages));
+
+      document.getElementById("content").value = "";
+      alert("Message ajouté !");
+    });
+  </script>
+</body>
+</html>
