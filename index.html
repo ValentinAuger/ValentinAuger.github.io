@@ -1,97 +1,671 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>WIP - Valentin Auger</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valentin Auger</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background-color: #262626;
-    }
+  :root {
+  --bg: #faf9ee;
+  --overlay-bg: rgba(250, 249, 238, 0.85);
+  --text: #111;
+  --block-width: 520px;
+  --col-small: 140px;
+  --col-large: calc(var(--col-small) * 2);
+  --body-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+/* ----------- Brand ----------- */
 
-    img {
-      display: none;
-      position: absolute;
-    }
+.button {
+  line-height: 2.5;
+  padding: 0 20px;
+  font-size: 1rem;
+  text-align: center;
+  background-color: transparent;
+  color: #000000;
+  border-radius: 10px;
+  border: 1px solid #000000;
+  transition: all 0.2s ease;
+}
 
-    #img-phone {
-      width: 100vw;
-      height: 100vh;
-      object-fit: contain;
-      background-color: #000;
-      position: fixed;
-    }
+.button:hover {
+  transform: rotate(-3deg);
+  font-size: 1.05rem;
+  cursor: pointer;
+}
 
-    #img-desktop {
-      max-width: 90%;
-      max-height: 90%;
-      cursor: grab;
-    }
+.button:active {
+  background-color: #000000;
+  color: rgba(250, 249, 238);
+  transform: rotate(0deg) scale(0.98);
+  transform: rotate(-3deg);
+}
+
+/* Base */
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body-font);
+  font-size: 12px;
+}
+
+/* ----------- Brand ----------- */
+.brand {
+  position: fixed;
+  left: -20px;
+  top: 20px;
+  z-index: 9999;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transform-origin: left center;
+  transition: transform 0.25s ease;
+}
+.brand:hover {
+  transform: rotate(-3deg) translateX(-10px);
+}
+
+/* ----------- Blocks (cartes) ----------- */
+.blocks {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  margin-right: 6vw;
+  margin-top: 100px;
+}
+
+.block {
+  width: var(--block-width);
+  padding: 12px;
+  display: grid;
+  grid-template-columns: var(--col-small) var(--col-small) var(--col-large);
+  gap: 8px;
+  align-items: start;
+  transform-origin: center left;
+  transition: transform 0.25s ease;
+  position: relative;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.block:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 100%;
+  margin-right: 20px;
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.block.hotwindblows:hover::after {
+  background-image: url('./hotwind.png');
+}
+
+.block.jasminetcigarette:hover::after {
+  background-image: url('./jasmin.png');
+}
+
+.block.pierreetloup:hover::after {
+  background-image: url('./pierre.png');
+}
+
+.block.editionsgroscaractere:hover::after {
+  background-image: url('./editiongc.png');
+}
+
+.block.onneveutplus:hover::after {
+  background-image: url('./images/fanzine-hover.png');
+}
+
+.block.marelle:hover::after {
+  background-image: url('./marelle.png');
+}
+
+.block.himekuri:hover::after {
+  background-image: url('./himekuri.png');
+}
+
+.block.riso2:hover::after {
+  background-image: url('./marelle.png');
+}
+
+.block.riso:hover::after {
+  background-image: url('./riso.png');
+}
+
+.block.watch:hover::after {
+  background-image: url('./tshirt.png');
+}
+
+.block.vinyle:hover::after {
+  background-image: url('./vinyle.png');
+}
+
+
+.block .title {
+  font-weight: 700;
+  margin: 0 0 6px 0;
+}
+.block .desc {
+  margin: 0;
+  font-size: 11px;
+  opacity: 0.95;
+}
+
+/* Position / rotation des cartes */
+.block.hotwindblows { transform: rotate(-3deg) translateX(-30px); }
+.block.jasminetcigarette { transform: rotate(5deg) translateX(0px); }
+.block.pierreetloup { transform: rotate(-6deg) translateX(-20px); }
+.block.editionsgroscaractere { transform: rotate(-1deg) translateX(-60px); }
+.block.onneveutplus { transform: rotate(4deg) translateX(-200px); }
+.block.marelle { transform: rotate(-4deg) translateX(-100px); }
+.block.himekuri { transform: rotate(-1deg) translateX(-150px); }
+.block.riso2 { transform: rotate(-5deg) translateX(-100px); }
+.block.riso { transform: rotate(2deg) translateX(-50px); }
+.block.watch { transform: rotate(-2deg) translateX(-20px); }
+.block.vinyle { transform: rotate(3deg) translateX(-60px); }
+
+.block:hover {
+  transform: rotate(0deg);
+}
+
+/* ----------- Overlays ----------- */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  z-index: 9998;
+  overflow: auto;
+  padding: 48px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.overlay:target {
+  display: block;
+}
+
+/* Désactive toute animation/transition sur overlays */
+.overlay,
+.overlay * {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Contenu du panneau */
+.overlay .panel {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  color: var(--text);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Image principale */
+.overlay .panel h2 {
+  margin: 0;
+  padding: 0;
+}
+.overlay .panel h2 img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 50px;
+}
+
+/* Texte */
+.overlay .panel p {
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Galerie */
+.overlay .gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.overlay .gallery img {
+  width: auto;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+/* Bouton fermer */
+.overlay .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-decoration: none;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.footer {
+  text-align: center;
+  padding: 60px 0 20px 0;
+  font-size: 12px;
+  color: var(--text);
+  background: var(--bg);
+  opacity: 0.8;
+}
+.footer p {
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+/* ============================
+   RESPONSIVE DESIGN MOBILE (avec blocs penchés)
+   ============================ */
+   @media (max-width: 768px) {
+
+html, body {
+  font-size: 13px;
+  overflow-x: hidden;
+}
+.button {
+  width: 50vw;
+}
+.brand {
+  position: static;
+  display: block;
+  text-align: center;
+  margin: 20px auto;
+  transform: none !important;
+}
+
+.blocks {
+  margin: 40px auto 80px;
+  padding: 0 20px;
+  align-items: center;
+  gap: 20px;
+}
+
+.block {
+  width: 100%;
+  max-width: 360px;
+  grid-template-columns: 1fr;
+  text-align: left;
+  transform-origin: center;
+  border-radius: 10px;
+}
+
+/* Réduction de l'angle et du décalage pour petit écran */
+.block.hotwindblows { transform: rotate(-2deg) translateX(-10px); }
+.block.jasminetcigarette { transform: rotate(2deg) translateX(10px); }
+.block.pierreetloup { transform: rotate(-2deg) translateX(-8px); }
+.block.editionsgroscaractere { transform: rotate(-1deg) translateX(-12px); }
+.block.onneveutplus { transform: rotate(2deg) translateX(-15px); }
+.block.marelle { transform: rotate(-2deg) translateX(-10px); }
+.block.himekuri { transform: rotate(-1deg) translateX(-8px); }
+.block.riso2 { transform: rotate(-3deg) translateX(-10px); }
+.block.riso { transform: rotate(2deg) translateX(-8px); }
+.block.watch { transform: rotate(-1deg) translateX(-6px); }
+.block.vinyle { transform: rotate(1deg) translateX(-8px); }
+
+.block:hover {
+  transform: rotate(0deg);
+}
+
+.block:hover::after {
+  display: none; /* pas d'image de survol sur mobile */
+}
+
+.block .title {
+  font-size: 15px;
+}
+
+.block .desc {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.overlay {
+  padding: 20px;
+}
+
+.overlay .panel {
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+}
+
+.overlay .panel h2 img {
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+.overlay .gallery {
+  flex-direction: column;
+  gap: 12px;
+}
+
+.overlay .gallery img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.footer {
+  padding: 30px 10px;
+  font-size: 12px;
+}
+}
+
+/* Très petits écrans */
+@media (max-width: 400px) {
+.block {
+  max-width: 320px;
+  padding: 12px;
+}
+.block .title {
+  font-size: 14px;
+}
+.block .desc {
+  font-size: 11.5px;
+}
+}
   </style>
 </head>
 <body>
-  <img id="img-phone" src="imgphone.png" alt="Image téléphone">
-  <img id="img-desktop" src="img.png" alt="Image ordinateur">
+  <a href="#about"><div class="brand">
+    <img src="./images/valentinauger.png" alt="Valentin Auger" style="width: 300px;">
+  </div></a>
 
+  <div class="blocks">
+    <a href="#hotwindblows" class="block hotwindblows">
+      <div class="date">2025</div>
+      <div class="type">Édition</div>
+      <div class="title-desc">
+        <div class="title">HOT WIND BLOWS</div>
+        <div class="desc">Réalisation d’un photogramme illustrant un procédé filmique à partir d’une vidéo. J’ai choisi le clip du morceau Hot Wind Blows de Tyler, The Creator. Le clip est filmé avec un caméscope de poche, ce qui créé de nombreuses imperfections visuelles ainsi qu’un rendu flou et pixellisé. Pour mon édition, j’ai décidé de retranscrire cette dégradation numérique sur papier.</div>
+      </div>
+    </a>
+
+    <a href="#jasminetcigarette" class="block jasminetcigarette" style="padding-bottom: 80px;">
+      <div class="date">2025</div>
+      <div class="type">Identité visuelle</div>
+      <div class="title-desc">
+        <div class="title">Jasmin et Cigarette</div>
+        <div class="desc">Réalisation d’une campagne de pub fictive pour Etat Libre d’Orange, Parfum « Jasmin et Cigarette » ne représentant pas le corps. J’ai axé la campagne de pub sur la dualité entre les deux notes du parfum et le coté très transgressif d’un parfum à l’odeur de la fumée de la cigarette.</div>
+      </div>
+    </a>
+
+    <a href="#pierreetloup" class="block pierreetloup">
+      <div class="date">2025</div>
+      <div class="type">Édition</div>
+      <div class="title-desc">
+        <div class="title">Pierre et le Loup</div>
+        <div class="desc">Illustration du conte musical pour enfants Pierre et le Loup en linogravure. J’ai décidé de donner à chaque personnage une identité propre en leur associant un style et une intention différente. Le conte contient aussi un CD avec l’enregistrement de Pierre et le Loup joué par l’Orchestre Symphonique de Radio France.</div>
+      </div>
+    </a>
+
+    <a href="#editionsgroscaractere" class="block editionsgroscaractere">
+      <div class="date">2025</div>
+      <div class="type">Édition</div>
+      <div class="title-desc">
+        <div class="title">Lire entre les lettres</div>
+        <div class="desc">Réalisation d’une édition collective avec Méline Peltier--Matter, Ambre Vauché et Jeanne Godiche--Souché contenant nos travaux personnels de lettrages, ainsi qu’une reprise des fondamentaux et de l’histoire de la typographie, accompagnée d’illustrations de devantures et de lettrages trouvés dans la rue.</div>
+      </div>
+    </a>
+
+    <!-- <a href="#onneveutplus" class="block onneveutplus" style="padding-bottom: 50px;">
+      <div class="date">2025</div>
+      <div class="type">Fanzine</div>
+      <div class="title-desc">
+        <div class="title">on ne veut plus.</div>
+        <div class="desc">le 10 septembre, un mouvement social a conduit de nombreuses personnes à descendre dans la rue. la police a réprimé très violemment les manifestant·es et les blocages. les principaux dégâts de cette journée, notamment l’incendie d’un immeuble, sont de la responsabilité des forces de l’ordre.</div>
+      </div>
+    </a> -->
+
+    <a href="#marelle" class="block marelle">
+      <div class="date">2024</div>
+      <div class="type">Lettrage</div>
+      <div class="title-desc">
+        <div class="title">Marelle</div>
+        <div class="desc">Réalisation d’un lettrage dans le cadre du workshop « Faire signe » avec Charlotte Attal. J’ai cherché à représenter la difficulté de l’apprentissage de la lecture : ce moment où les lettres apparaissent comme des formes mystérieuses, incompréhensibles. Certaines personnes mettront des années à les déchiffrer, tandis que d’autres ne les comprendront jamais.</div>
+      </div>
+    </a>
+
+    <a href="#himekuri" class="block himekuri">
+      <div class="date">2024</div>
+      <div class="type">Calendrier</div>
+      <div class="title-desc">
+        <div class="title">Himekuri</div>
+        <div class="desc">Réalisation d’un Himekuri, un calendrier japonais présentant chaque jour des informations sur la journée. Généralement, ces informations sont en lien avec la culture, les mythes et les légendes japonaises. Ma version occidentalisée présente la position des planètes, les fruits et légumes de saison, ainsi que les heures de lever et de coucher du soleil à Paris.</div>
+      </div>
+    </a>
+ <!-- <a href="#onneveutplus" class="block onneveutplus" style="padding-bottom: 50px;">
+    <a href="#riso2" class="block riso2">
+      <div class="date">2025</div>
+      <div class="type">Édition</div>
+      <div class="title-desc">
+        <div class="title">Typologie</div>
+        <div class="desc">//Réalisation d’un lettrage dans le cadre du workshop « Faire signe » avec Charlotte Attal. J’ai cherché à représenter la difficulté de l’apprentissage de la lecture : ce moment où les lettres apparaissent comme des formes mystérieuses, incompréhensibles. Certaines personnes mettront des années à les déchiffrer, tandis que d’autres ne les comprendront jamais.</div>
+      </div>
+    </a>
+  -->
+    <a href="#riso" class="block riso" style="padding-bottom: 20px;">
+      <div class="date">2024</div>
+      <div class="type">Édition</div>
+      <div class="title-desc">
+        <div class="title">Beton et Verdure</div>
+        <div class="desc">Création d’une édition en risographie de 32 pages sur le thème « Béton & verdure ». J’ai réalisé deux pages de cette édition en collaboration avec Juliette Hent (DNMADe 2 Espace Urbain de l’ENSAAMA).Pour la première, je me suis inspiré des Khrouchtchevkas russes et de l’architecture brutaliste des mêmes années. Pour le deuxième visuel, j’ai imaginé un bâtiment dont les racines s’enfouissent dans le sol, à la manière d’un arbre.</div>
+      </div>
+    </a>
+
+    <a href="#watch" class="block watch">
+      <div class="date">2024</div>
+      <div class="type">T-shirt</div>
+      <div class="title-desc">
+        <div class="title">Watch</div>
+        <div class="desc">La fast fashion est synonyme de désastre humain et environnemental, la mode ethique est chère. La seule alternative, la seconde main. Voici « WATCH » un projet de recyclage de vêtements de seconde main, des vieux t-shirts, auxquels je donne une nouvelle vie en les nettoyant et en leur donnant une esthetique propre.</div>
+      </div>
+    </a>
+
+    <a href="#vinyle" class="block vinyle">
+      <div class="date">2025</div>
+      <div class="type">Identié visuelle</div>
+      <div class="title-desc">
+        <div class="title">Jazzmatazz VOL.II</div>
+        <div class="desc">Création de macaron de vinyle dans le cadre du Workshop « … »
+          J’ai choisi de créer un macaron pour la mixtape Jazzmatazz, un album de fusion jazz/hip-hop des années 90 dirigé par le producteur new-yorkais Guru. J’ai repris l’esthétique des voitures des années 60, très en vogue dans les cartels de New York de cette époque, un milieu qui tenait particulièrement à cœur à Guru.</div>
+      </div>
+    </a>
+  
+  </div>
+
+
+<!----------------------------------------> 
+
+  <div id="hotwindblows" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./images/hot wind blows.png" alt="HOT WIND BLOWS"></h2>
+      <p>Réalisation d’un photogramme illustrant un procédé filmique à partir d’une vidéo. J’ai choisi le clip du morceau Hot Wind Blows de Tyler, The Creator. Le clip est filmé avec un caméscope de poche, ce qui créé de nombreuses imperfections visuelles ainsi qu’un rendu flou et pixellisé. Pour mon édition, j’ai décidé de retranscrire cette dégradation numérique sur papier.</p>
+      <div class="gallery">
+        <img src="./images/tyler 1 .png" alt="HOT WIND BLOWS">
+        <img src="./images/tyler 2.png" alt="HOT WIND BLOWS">
+        <img src="./images/tyler 4.png" alt="HOT WIND BLOWS">
+      </div>
+    </div>
+  </div>
+
+  <div id="jasminetcigarette" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./images/jasmin.png" alt="Jasmin et Cigarette"></h2>
+      <p>Réalisation d’un photogramme illustrant un procédé filmique à partir d’une vidéo. J’ai choisi le clip du morceau Hot Wind Blows de Tyler, The Creator. Le clip est filmé avec un caméscope de poche, ce qui créé de nombreuses imperfections visuelles ainsi qu’un rendu flou et pixellisé. Pour mon édition, j’ai décidé de retranscrire cette dégradation numérique sur papier.</p>
+      <div class="gallery">
+        <img src="./images/jasmin1.png" alt="Jasmin et Cigarette">
+        <img src="./images/jasmin2.png" alt="Jasmin et Cigarette">
+        <img src="./images/jasmin3.png" alt="Jasmin et Cigarette">
+        <img src="./images/jasmin4.png" alt="Jasmin et Cigarette">
+      </div>
+    </div>
+  </div>
+
+  <div id="pierreetloup" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./images/pierrehover.png" alt="Pierre et le Loup"></h2>
+      <p>Illustration du conte musical pour enfants Pierre et le Loup en linogravure. J’ai décidé de donner à chaque personnage une identité propre en leur associant un style et une intention différente. Le conte contient aussi un CD avec l’enregistrement de Pierre et le Loup joué par l’Orchestre Symphonique de Radio France.</p>
+      <div class="gallery">
+        <img src="./images/pierre.png" alt="Pierre et le Loup">
+        <img src="./images/pierre1.png" alt="Pierre et le Loup">
+        <img src="./images/pierre2.png" alt="Pierre et le Loup">
+        <img src="./images/pierre3.png" alt="Pierre et le Loup">
+      </div>
+    </div>
+  </div>
+
+  <div id="editionsgroscaractere" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./images/editionhover.png" alt="lire entre les lettres"></h2>
+      <p>Cette édition est une collaboration entre quatre étudiant·e·s de l'ENSAAMA dans le cadre du workshop « Faire signe ! » organisé par Charlotte Attal. Ce travail orbite autour d'une étude plus générale de la lettre, depuis son fonctionnement théorique stric et normé, jusqu'au graffi tis rencontrés dans les rues de Paris. De cette étude en ressort quatre projets intimes sur des héritages personnels. Ces derniers sont mis en lumières au travers de lettrages, mots, typographies et signes faits main. Ces travaux ont été présentés à l'occasion d'une mini-exposition rassemblant en un même lieu des histoires aussi diverses que variées.</p>
+      <div class="gallery">
+        <img src="./images/edition.png" alt="Éditions Gros Caractère">
+        <img src="./images/edition2.png" alt="Éditions Gros Caractère">
+        <img src="./images/edition1.png" alt="Éditions Gros Caractère">
+        <img src="./images/edition3.png" alt="Éditions Gros Caractère">
+        <img src="./images/edition4.png" alt="Éditions Gros Caractère">
+      </div>
+    </div>
+  </div>
+
+  <div id="onneveutplus" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./images/fanzine-hover.png" alt="on ne veut plus."></h2>
+      <p>le 10 septembre, un mouvement social a conduit de nombreuses personnes à descendre dans la rue. la police a réprimé très violemment les manifestant·es et les blocages. les principaux dégâts de cette journée, notamment l’incendie d’un immeuble, sont de la responsabilité des forces de l’ordre.es manifestant·es et grévistes ayant participé aux mouvements qui ont suivi le 18 septembre et le 2 octobre ont elles et eux aussi subi des violences. les photos de ce fanzine témoignent de nos manifestations, de nos cortèges et de ce que nous avons pu observer.</p>
+      <div class="gallery">
+        <img src="./images/fanzine 1.png" alt="on ne veut plus.">
+        <img src="./images/fanzine 2.png" alt="on ne veut plus.">
+      </div>
+    </div>
+  </div> 
+
+  <div id="marelle" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./marelle.png" alt="Marelle"></h2>
+      <p>Réalisation d’un lettrage dans le cadre du workshop « Faire signe » avec Charlotte Attal. J’ai cherché à représenter la difficulté de l’apprentissage de la lecture : ce moment où les lettres apparaissent comme des formes mystérieuses, incompréhensibles. Certaines personnes mettront des années à les déchiffrer, tandis que d’autres ne les comprendront jamais.</p>
+      <div class="gallery">
+        <img src="./images/marelle1.png" alt="Marelle">
+        <img src="./images/marelle 2.png" alt="Marelle">
+      </div>
+    </div>
+  </div>
+
+  <div id="himekuri" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./images/himekurihover.png" alt="Himekuri"></h2>
+      <p>Réalisation d’un Himekuri, un calendrier japonais présentant chaque jour des informations sur la journée. Ma version occidentalisée présente la position des planètes, les fruits et légumes de saison, ainsi que les heures de lever et de coucher du soleil à Paris.</p>
+      <div class="gallery">
+        <img src="./images/himekuri.jpg" alt="Himekuri">
+        <img src="./images/himekuri.png" alt="Himekuri">
+      </div>
+    </div>
+  </div>
+
+  <div id="riso2" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./images/riso2.png" alt="Typologie"></h2>
+      <p>Création d’une édition typographique expérimentale intitulée « Typologie ». Exploration de la forme des lettres et de leurs structures à travers la risographie et des compositions abstraites jouant sur les rapports d’échelle et de densité.</p>
+      <div class="gallery">
+        <img src="./images/riso2-1.png" alt="Typologie">
+        <img src="./images/riso2-2.png" alt="Typologie">
+        <img src="./images/riso2-3.png" alt="Typologie">
+      </div>
+    </div>
+  </div>
+
+  <div id="riso" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./images/beton verdure logo.png" alt="Béton et Verdure"></h2>
+      <p>Création d’une édition en risographie de 32 pages sur le thème « Béton & verdure ». Réflexion sur la cohabitation entre la nature et l’architecture urbaine. Les compositions jouent sur la superposition et la texture propres à la risographie.</p>
+      <div class="gallery">
+        <img src="./images/riso1-2.png" alt="Béton et Verdure">
+        <img src="./images/IMG_6968.png" alt="Béton et Verdure">
+      </div>
+    </div>
+  </div>
+
+  <div id="watch" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./images/watchhover.png" alt="Béton et Verdure"></h2>
+      <p>La fast fashion est synonyme de désastre humain et environnemental, la mode ethique est chère. La seule alternative, la seconde main. Voici « WATCH » un projet de recyclage de vêtements de seconde main, des vieux t-shirts, auxquels je donne une nouvelle vie en les nettoyant et en leur donnant une esthetique propre.</p>
+      <div class="gallery">
+        <img src="./images/tshirt.png" style="width: 40vw; height: auto; margin-bottom: -100px;" alt="Béton et Verdure">
+        <img src="./images/packaging.png" alt="Béton et Verdure">
+      </div>
+    </div>
+  </div>
+
+  <div id="vinyle" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <h2><img src="./images/vinylehover.png" alt="Jazzmatazz"></h2>
+      <p>Création de macaron de vinyle dans le cadre du Workshop « Vinyle » de Mathilde Velden. J’ai choisi de créer un macaron pour la mixtape Jazzmatazz, un album de fusion jazz/hip-hop des années 90 dirigé par le producteur new-yorkais Guru. J’ai repris l’esthétique des voitures des années 60, très en vogue dans les cartels de New York de cette époque, un milieu qui tenait particulièrement à cœur à Guru.</p>
+      <div class="gallery">
+        <img src="./images/vinyle.png" style="width: 60vw; height: auto; margin-bottom: -100px;" alt="vinyle">
+      </div>
+    </div>
+  </div>
+
+  <div id="about" class="overlay">
+    <div class="panel">
+      <a href="#" class="close">Retour</a>
+      <div style="display: flex;">
+      <h2><img src="./images/DSC_0118.jpg" style="max-width: 150px; margin-top:0; margin-right: 20px;" alt="Valentin Auger"></h2>
+      <p style="text-align: left;">
+        <strong>Étudiant en design graphique</strong><BR><BR>
+        École Nationale Supérieure<BR>
+        des Arts Appliqués et des Métiers d’Art,<BR>
+        Olivier de Serres<BR><BR>
+        
+        DN MADe 2 Graphisme<BR>
+        Édition et typographie imprimées<BR>
+        et numériques</p>
+      </div>
+      <div class="gallery">
+        <a href="https://www.instagram.com/ogvalentin/" target="_blank"><input class="button" type="button" value="Instagram" /></a>
+        <a href="mailto:valentin.auger-nouss@ensaama.net" target="_blank"><input class="button" type="button" value="Contact" /></a>
+        <a href="Valentin Auger.pdf" download ><input class="button" type="button" value="Portfolio" /></a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© <span id="year"></span></p>
+  </footer>
+  
   <script>
-    const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
-    const phoneImg = document.getElementById('img-phone');
-    const desktopImg = document.getElementById('img-desktop');
-
-    if (isMobile) {
-      // Affiche l'image mobile
-      phoneImg.style.display = 'block';
-    } else {
-      // Affiche l'image desktop
-      desktopImg.style.display = 'block';
-
-      // Centre l'image à l'affichage
-      window.addEventListener('load', () => {
-        const winW = window.innerWidth;
-        const winH = window.innerHeight;
-        const imgW = desktopImg.offsetWidth;
-        const imgH = desktopImg.offsetHeight;
-        desktopImg.style.left = (winW - imgW) / 2 + 'px';
-        desktopImg.style.top = (winH - imgH) / 2 + 'px';
-      });
-
-      // Hover → change l'image
-      desktopImg.addEventListener('mouseenter', () => {
-        desktopImg.src = 'img2.png';
-      });
-
-      desktopImg.addEventListener('mouseleave', () => {
-        desktopImg.src = 'img.png';
-      });
-
-      // Déplacement à la souris
-      let isDragging = false;
-      let offset = { x: 0, y: 0 };
-
-      desktopImg.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        offset.x = e.clientX - desktopImg.offsetLeft;
-        offset.y = e.clientY - desktopImg.offsetTop;
-        desktopImg.style.cursor = 'grabbing';
-      });
-
-      document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-          desktopImg.style.left = (e.clientX - offset.x) + 'px';
-          desktopImg.style.top = (e.clientY - offset.y) + 'px';
-        }
-      });
-
-      document.addEventListener('mouseup', () => {
-        isDragging = false;
-        desktopImg.style.cursor = 'grab';
-      });
-
-      desktopImg.ondragstart = () => false;
-    }
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
