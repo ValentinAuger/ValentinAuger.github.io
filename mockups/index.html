@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ressources PPD & Mockups</title>
+  <style>
+    :root{--bg:#f7fafc;--card:#ffffff;--muted:#6b7280;--accent:#2563eb}
+    *{box-sizing:border-box}
+    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:#111}
+    .container{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+    header h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted);font-size:14px}
+
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    .card{background:var(--card);border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(2,6,23,0.06)}
+
+    /* upload / instructions */
+    .u-list{display:flex;flex-direction:column;gap:8px}
+    .hint{font-size:13px;color:var(--muted)}
+
+    /* search panel */
+    .search input{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px}
+    .filters{display:flex;gap:8px;margin-top:10px;align-items:center}
+    select,button{padding:8px;border-radius:8px;border:1px solid #e5e7eb;background:white}
+    .count{font-size:13px;color:var(--muted)}
+
+    /* list */
+    .list{display:grid;gap:12px;margin-top:14px}
+    .item{display:flex;gap:12px;align-items:flex-start}
+    .thumb{width:84px;height:84px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #eef2f7}
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    .meta{flex:1}
+    .meta .title{font-weight:600}
+    .meta .small{font-size:13px;color:var(--muted);margin-top:6px}
+    .tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+    .tag{background:#f1f5f9;color:#0f172a;padding:6px 8px;border-radius:999px;font-size:12px}
+    .actions{display:flex;flex-direction:column;gap:8px}
+    .btn{padding:8px 10px;border-radius:8px;border:1px solid #e5e7eb;background:white;cursor:pointer}
+    .btn-primary{background:var(--accent);color:white;border:none}
+
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+
+    @media (max-width:900px){.grid{grid-template-columns:1fr} .thumb{width:72px;height:72px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div style="flex:1">
+        <h1>Mockups et ressources</h1>
+        <p class="lead">Ressources par des étudiants de l'ENSAAMA pour les étudiants</p>
+      </div>
+      <div style="text-align:right">
+        <small style="color:var(--muted)">Les mockups sont sous licences CC BY 4.0 <BR> les PPD viennent de chez www.openprinting.org</small>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- left: list -->
+      <div>
+        <div class="card">
+          <div class="search">
+            <input id="searchInput" placeholder="Rechercher par mot-clé (ex: 60x40 métro)" />
+            <div class="filters">
+              <label for="typeSelect" style="font-size:13px;color:var(--muted)">Type:</label>
+              <select id="typeSelect">
+                <option value="all">Tous</option>
+                <option value="ppd">PPD (imprimantes)</option>
+                <option value="mockup">Mockup</option>
+              </select>
+              <div style="flex:1"></div>
+              <div class="count" id="resultCount">0 résultats</div>
+            </div>
+          </div>
+
+          <div class="list" id="resourceList">
+            <!-- items inserted here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- right: info / exemples -->
+      <aside>
+        <div class="card">
+          <h3 style="margin:0 0 8px 0">Tutoriels</h3>
+          <div class="u-list">
+            <div>
+              <strong>Fichiers PPD</strong>
+              <div class="hint">Un fichier PPD permet de crééer des imprimantes virtuels pour exporter notament depuis Indesign des PDFs correspondant parfairements aux caracteritiques des differetntes imprimantes</div>
+              <div class="hint">Tuto pour installer un fichier PPD</div>
+              <div class="hint">Tuto pour exporter un carnet sur Indesign</div>
+            </div>
+
+            <div>
+                <strong>Mockups</strong>
+                <div class="hint">Un fichier PPD permet de crééer des imprimantes virtuels pour exporter notament depuis Indesign des PDFs correspondant parfairements aux caracteritiques des differetntes imprimantes</div>
+                <div href="youtube.com" class="hint">Tuto pour installer un fichier PPD</div>
+                <div href="youtube.com" class="hint">Tuto pour exporter un carnet sur Indesign</div>
+
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+
+    const resources = [
+      // small example PPD (texte)
+      {
+        id: 1,
+        name: 'Imprimante virtuelle A3',
+        type: 'ppd',
+        tags: ['A3','A4','imprimante'],
+        data: './VirtualPrinter_A3.ppd',
+      },
+      {
+        id: 11,
+        name: 'Affiche dans le métro',
+        type: 'mockup',
+        tags: ['.psd','métro','60x40','affiche'],
+        preview: './affiche_metro.jpeg',
+        data: './affiche_metro.psd'
+      },
+      {
+        id: 12,
+        name: 'Affiche dans la rue',
+        type: 'mockup',
+        tags: ['.psd','rue','60x40','affiche'],
+        preview: './mockup_jcdecaux.jpeg',
+        data: 'mockup_jcdecaux.psd'
+      },
+    ];
+
+    // ---------------- Utility functions ----------------
+    function normalizeText(s){
+      return (s||'').toString().normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();
+    }
+
+    function matches(resource, queryTerms){
+      if(!queryTerms || queryTerms.length===0) return true;
+      const hay = [resource.name, ...(resource.tags||[])].join(' ');
+      const hayNorm = normalizeText(hay);
+      return queryTerms.every(q => hayNorm.includes(normalizeText(q)));
+    }
+
+    function renderResources(list){
+      const container = document.getElementById('resourceList');
+      container.innerHTML = '';
+      list.forEach(res => {
+        const el = document.createElement('div');
+        el.className = 'item';
+
+        const thumb = document.createElement('div');
+        thumb.className = 'thumb';
+        if(res.type === 'mockup'){
+          const img = document.createElement('img');
+          img.src = res.preview;
+          img.alt = res.name;
+          thumb.appendChild(img);
+        } else {
+          thumb.innerHTML = '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#9CA3AF" stroke-width="1.2"/><text x="50%" y="55%" text-anchor="middle" font-size="10" fill="#9CA3AF">PPD</text></svg>';
+        }
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.innerHTML = `<div class="title">${res.name}</div><div class="small">Type: ${res.type.toUpperCase()}</div>`;
+
+        const tags = document.createElement('div');
+        tags.className = 'tags';
+        // tags are buttons: click -> add keyword to search
+        (res.tags||[]).forEach(t => {
+          const s = document.createElement('button');
+          s.type = 'button';
+          s.className = 'tag';
+          s.textContent = t;
+          s.title = `Ajouter "${t}" à la recherche`;
+          s.addEventListener('click', () => addTagToSearch(t));
+          tags.appendChild(s);
+        });
+        meta.appendChild(tags);
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+        const dl = document.createElement('button'); dl.className='btn btn-primary'; dl.textContent='Télécharger';
+        dl.onclick = ()=> downloadResource(res);
+        actions.appendChild(dl);
+
+        el.appendChild(thumb); el.appendChild(meta); el.appendChild(actions);
+
+        container.appendChild(el);
+      });
+
+      document.getElementById('resultCount').textContent = list.length + (list.length>1? ' résultats':' résultat');
+    }
+
+    // Ajoute le mot-clé cliqué à la barre de recherche (évite doublons) et applique le filtre
+    function addTagToSearch(tag){
+      const input = document.getElementById('searchInput');
+      const raw = input.value || '';
+      const terms = raw.split(/[\s,;]+/).map(s=>s.trim()).filter(Boolean);
+      if(!terms.includes(tag)){
+        terms.push(tag);
+        input.value = terms.join(' ');
+        input.focus();
+        applyFilters();
+      } else {
+        // si déjà présent, on fait juste focus et relance (utile si l'utilisateur souhaite)
+        input.focus();
+        applyFilters();
+      }
+    }
+
+    function downloadResource(res) {
+  // Récupérer le dataUrl et définir un nom de fichier par défaut
+  const source = res.data;
+  const filename = res.data;
+
+  // Créer un élément <a> pour forcer le téléchargement
+  const a = document.createElement('a');
+  a.href = source;
+  a.download = filename;
+
+  // Ajouter l'élément au DOM, déclencher le clic, puis le supprimer
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+    function previewResource(res){
+      if(res.type === 'mockup'){
+        // Affiche l'image seule dans une nouvelle fenêtre
+        const w = window.open('', '_blank');
+        w.document.title = res.name;
+        const img = w.document.createElement('img');
+        img.src = res.preview;
+        img.alt = res.name;
+        img.style.maxWidth = '100vw';
+        img.style.maxHeight = '100vh';
+        img.style.display = 'block';
+        img.style.margin = 'auto';
+        w.document.body.style.background = '#222';
+        w.document.body.style.display = 'flex';
+        w.document.body.style.justifyContent = 'center';
+        w.document.body.style.alignItems = 'center';
+        w.document.body.style.height = '100vh';
+        w.document.body.appendChild(img);
+      } else {
+        // show text PPD in a modal-like window
+        const w = window.open('', '_blank');
+        fetch(res.dataUrl).then(r=>r.text()).then(txt=>{
+          w.document.title = res.name;
+          const pre = w.document.createElement('pre');
+          pre.textContent = txt;
+          pre.style.whiteSpace='pre-wrap';
+          pre.style.fontFamily='monospace';
+          pre.style.padding='12px';
+          w.document.body.appendChild(pre);
+        });
+      }
+    }
+
+    const preview = "./affiche_metro.jpeg";
+
+    // Fonction pour afficher la prévisualisation
+    function showMockupPreview(preview) {
+      const previewImage = document.getElementById('previewImage');
+      if (previewImage) {
+        previewImage.src = preview; // Définit la source de l'image
+      } else {
+        console.error("L'élément de prévisualisation n'existe pas.");
+      }
+    }
+
+    // Appel de la fonction avec l'URL de prévisualisation
+    showMockupPreview(preview);
+
+    // ---------------- Search logic ----------------
+    function getQueryTerms(){
+      const raw = document.getElementById('searchInput').value || '';
+      // split by spaces, commas, semicolons
+      return raw.split(/[\s,;]+/).map(s=>s.trim()).filter(Boolean);
+    }
+
+    function applyFilters(){
+      const type = document.getElementById('typeSelect').value;
+      const q = getQueryTerms();
+      let filtered = resources.filter(r => {
+        if(type !== 'all' && r.type !== type) return false;
+        return matches(r, q);
+      });
+      renderResources(filtered);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('typeSelect').addEventListener('change', applyFilters);
+
+    // initial render : affiche tout par défaut
+    applyFilters();
+
+    // Accessibility: allow Enter to clear search
+    document.getElementById('searchInput').addEventListener('keydown', (e)=>{ if(e.key==='Escape'){document.getElementById('searchInput').value='';applyFilters();}});
+  </script>
+</body>
+</html>
