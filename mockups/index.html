@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ressources PPD & Mockups</title>
+  <title>Ensaamockups</title>
   <style>
     :root{--bg:#f7fafc;--card:#ffffff;--muted:#6b7280;--accent:#2563eb}
     *{box-sizing:border-box}
@@ -43,13 +43,63 @@
     footer{margin-top:18px;color:var(--muted);font-size:13px}
 
     @media (max-width:900px){.grid{grid-template-columns:1fr} .thumb{width:72px;height:72px}}
+
+    /* Add overlay/modal styles */
+    .overlay{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(2,6,23,0.5);
+      z-index:1000;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s ease;
+    }
+    .overlay.show{opacity:1;pointer-events:auto;}
+    .modal{
+      background:var(--card);
+      color:inherit;
+      border-radius:12px;
+      padding:18px;
+      max-width:420px;
+      width:90%;
+      box-shadow:0 8px 30px rgba(2,6,23,0.25);
+      text-align:left;
+      position:relative; /* ajouté pour pouvoir positionner la croix */
+    }
+    .modal h2{margin:0 0 8px 0;font-size:18px}
+    .modal p{margin:0 0 12px;color:var(--muted);font-size:14px}
+    .modal-buttons{display:flex;gap:8px;justify-content:flex-end}
+    .btn-donate{background:#10b981;color:white;border:none; text-decoration-line: none;}
+
+    /* close (red cross) */
+    .close-btn{
+      position:absolute;
+      top:-10px;
+      right:-10px;
+      width:36px;
+      height:36px;
+      border-radius:999px;
+      background:#fee2e2;
+      color:#b91c1c;
+      border:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:18px;
+      line-height:1;
+    }
+    .close-btn:hover{background:#fecaca}
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <div style="flex:1">
-        <h1>Mockups et ressources</h1>
+        <h1>Ensaamockups</h1>
         <p class="lead">Ressources par des étudiants de l'ENSAAMA pour les étudiants</p>
       </div>
       <div style="text-align:right">
@@ -84,24 +134,29 @@
       <!-- right: info / exemples -->
       <aside>
         <div class="card">
-          <h3 style="margin:0 0 8px 0">Tutoriels</h3>
+          <h3 style="margin:0 0 8px 0">C'est quoi un fichier PPD ?</h3>
           <div class="u-list">
             <div>
-              <strong>Fichiers PPD</strong>
               <div class="hint">Un fichier PPD permet de crééer des imprimantes virtuels pour exporter notament depuis Indesign des PDFs correspondant parfairements aux caracteritiques des differetntes imprimantes</div>
-              <div class="hint">Tuto pour installer un fichier PPD</div>
-              <div class="hint">Tuto pour exporter un carnet sur Indesign</div>
+              <div class="hint"><a href="https://youtu.be/BmT9HfGECGg?si=bRSkJ9fVmn6cuTzc">Tuto pour ajouter installer le fichier PPD</a></div>
+              <div class="hint"><a href="https://www.youtube.com/watch?v=TD-w_AvbZ-s">Tuto pour exporter des cahier sur InDesign</a></div>
             </div>
-
-            <div>
-                <strong>Mockups</strong>
-                <div class="hint">Un fichier PPD permet de crééer des imprimantes virtuels pour exporter notament depuis Indesign des PDFs correspondant parfairements aux caracteritiques des differetntes imprimantes</div>
-                <div href="youtube.com" class="hint">Tuto pour installer un fichier PPD</div>
-                <div href="youtube.com" class="hint">Tuto pour exporter un carnet sur Indesign</div>
-
-          </div>
         </div>
       </aside>
+    </div>
+  </div>
+
+  <!-- Insert thank-you overlay -->
+  <div id="thankYouOverlay" class="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="thanksTitle">
+      <!-- croix de fermeture en haut à droite -->
+      <button id="closeThanks" class="close-btn" type="button" aria-label="Fermer la fenêtre">&times;</button>
+
+      <h2 id="thanksTitle">Merci pour le téléchargement !</h2>
+      <p>Votre téléchargement a bien commencé. <br>Si ce mockup ou ce ficher vous est utile, pensez à faire <br>un don pour nous soutenir !</p>
+      <div class="modal-buttons">
+        <a href="https://buymeacoffee.com/valentinauger" target="_blank" rel="noopener" class="btn btn-primary btn-donate">Faire un don</a>
+      </div>
     </div>
   </div>
 
@@ -141,7 +196,7 @@
 
     function matches(resource, queryTerms){
       if(!queryTerms || queryTerms.length===0) return true;
-      const hay = [resource.name, ...(resource.tags||[])].join(' ');
+      const hay = [resource.name, resource.type, ...(resource.tags||[])].join(' ');
       const hayNorm = normalizeText(hay);
       return queryTerms.every(q => hayNorm.includes(normalizeText(q)));
     }
@@ -161,7 +216,7 @@
           img.alt = res.name;
           thumb.appendChild(img);
         } else {
-          thumb.innerHTML = '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#9CA3AF" stroke-width="1.2"/><text x="50%" y="55%" text-anchor="middle" font-size="10" fill="#9CA3AF">PPD</text></svg>';
+          thumb.innerHTML = '<?xml version="1.0" encoding="UTF-8"?><svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><defs><style>.cls-1 {fill: #9ca3af;}.cls-2 {isolation: isolate;}.cls-3 {fill: none;stroke: #9ca3af;stroke-miterlimit: 6;stroke-width: 1.8px;}</style></defs><rect class="cls-3" x="4.5" y="4.5" width="27" height="27" rx="3" ry="3"/><g class="cls-2"><path class="cls-1" d="M6.25,28.9v-1.51h1.51v1.51h-1.51Z"/><path class="cls-1" d="M8.8,28.9v-7.88h2.55c.97,0,1.6.04,1.89.12.45.12.83.38,1.13.77.3.4.46.91.46,1.54,0,.48-.09.89-.26,1.22-.18.33-.4.59-.67.78-.27.19-.55.31-.83.37-.38.08-.93.11-1.65.11h-1.04v2.97h-1.59ZM10.39,22.35v2.24h.87c.63,0,1.05-.04,1.26-.12.21-.08.38-.21.5-.39.12-.17.18-.38.18-.61,0-.29-.08-.52-.25-.71-.17-.19-.38-.3-.64-.35-.19-.04-.57-.05-1.14-.05h-.77Z"/><path class="cls-1" d="M15.62,28.9v-7.88h2.55c.97,0,1.6.04,1.89.12.45.12.83.38,1.13.77.3.4.46.91.46,1.54,0,.48-.09.89-.26,1.22-.18.33-.4.59-.67.78-.27.19-.55.31-.83.37-.38.08-.93.11-1.65.11h-1.04v2.97h-1.59ZM17.21,22.35v2.24h.87c.63,0,1.05-.04,1.26-.12.21-.08.38-.21.5-.39.12-.17.18-.38.18-.61,0-.29-.08-.52-.25-.71-.17-.19-.38-.3-.64-.35-.19-.04-.57-.05-1.15-.05h-.77Z"/><path class="cls-1" d="M22.44,21.02h2.91c.66,0,1.16.05,1.5.15.46.14.86.38,1.19.73s.58.77.75,1.28c.17.5.26,1.12.26,1.86,0,.65-.08,1.21-.24,1.68-.2.57-.48,1.04-.84,1.39-.28.27-.65.48-1.12.63-.35.11-.82.17-1.41.17h-2.99v-7.88ZM24.03,22.35v5.22h1.19c.44,0,.76-.03.96-.08.26-.06.47-.17.64-.33s.31-.41.42-.76c.11-.35.16-.83.16-1.44s-.05-1.08-.16-1.4c-.11-.33-.26-.58-.45-.76s-.44-.31-.74-.37c-.22-.05-.66-.08-1.31-.08h-.71Z"/></g></svg>';
         }
 
         const meta = document.createElement('div');
@@ -170,7 +225,7 @@
 
         const tags = document.createElement('div');
         tags.className = 'tags';
-        // tags are buttons: click -> add keyword to search
+
         (res.tags||[]).forEach(t => {
           const s = document.createElement('button');
           s.type = 'button';
@@ -213,21 +268,139 @@
       }
     }
 
+    // Replace downloadResource to show thank-you overlay after starting download
     function downloadResource(res) {
-  // Récupérer le dataUrl et définir un nom de fichier par défaut
-  const source = res.data;
-  const filename = res.data;
+      const source = res.data;
+      const filename = (res.data||'').split('/').pop();
 
-  // Créer un élément <a> pour forcer le téléchargement
-  const a = document.createElement('a');
-  a.href = source;
-  a.download = filename;
+      // Create anchor to trigger download
+      const a = document.createElement('a');
+      a.href = source;
+      a.download = filename || '';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
 
-  // Ajouter l'élément au DOM, déclencher le clic, puis le supprimer
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
+      // show thank-you overlay
+      showThankYou();
+    }
+
+    // --- Confetti with fade helpers ---
+    let _conf = { canvas: null, ctx: null, particles: [], raf: null, resizeHandler: null, startTime: 0 };
+
+    function startConfetti(container) {
+      if (_conf.canvas) return;
+      const c = document.createElement('canvas');
+      c.style.position = 'absolute';
+      c.style.inset = '0';
+      c.style.width = '100%';
+      c.style.height = '100%';
+      c.style.pointerEvents = 'none';
+      container.appendChild(c);
+      const ctx = c.getContext('2d');
+
+      const resize = () => { c.width = c.clientWidth; c.height = c.clientHeight; };
+      resize();
+      window.addEventListener('resize', resize);
+
+      const colors = ['#ef4444','#f97316','#f59e0b','#84cc16','#06b6d4','#7c3aed'];
+      const particles = [];
+      const count = Math.max(40, Math.min(140, Math.round((c.width * c.height) / 10000)));
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * c.width,
+          y: Math.random() * -c.height,
+          sx: (Math.random() - 0.5) * 2,
+          sy: 1 + Math.random() * 3,
+          size: 6 + Math.random() * 10,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rot: Math.random() * Math.PI * 2,
+          spin: (Math.random() - 0.5) * 0.2,
+          baseAlpha: 0.9 + Math.random() * 0.1
+        });
+      }
+
+      const totalDuration = 5000; // ms
+      const fadeDuration = 1000; // ms (last part fades out)
+      _conf = { canvas: c, ctx, particles, raf: null, resizeHandler: resize, startTime: performance.now() };
+
+      function render() {
+        const now = performance.now();
+        const elapsed = now - _conf.startTime;
+        const fadeStart = totalDuration - fadeDuration;
+        const fadeFactor = elapsed < fadeStart ? 1 : Math.max(0, 1 - (elapsed - fadeStart) / fadeDuration);
+
+        ctx.clearRect(0, 0, c.width, c.height);
+        for (let p of particles) {
+          p.x += p.sx;
+          p.y += p.sy;
+          p.rot += p.spin;
+          if (p.y > c.height + 20) {
+            p.x = Math.random() * c.width;
+            p.y = -10 - Math.random() * c.height * 0.3;
+          }
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.globalAlpha = p.baseAlpha * fadeFactor;
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          ctx.restore();
+        }
+
+        if (fadeFactor <= 0) {
+          stopConfetti();
+          return;
+        }
+        _conf.raf = requestAnimationFrame(render);
+      }
+      render();
+    }
+
+    function stopConfetti() {
+      if (!_conf.canvas) return;
+      cancelAnimationFrame(_conf.raf);
+      window.removeEventListener('resize', _conf.resizeHandler);
+      if (_conf.canvas.parentNode) _conf.canvas.parentNode.removeChild(_conf.canvas);
+      _conf = { canvas: null, ctx: null, particles: [], raf: null, resizeHandler: null, startTime: 0 };
+    }
+
+    // show/hide overlay, start confetti and let it fade
+    function showThankYou(){
+      const o = document.getElementById('thankYouOverlay');
+      if(!o) return;
+      o.classList.add('show');
+      o.setAttribute('aria-hidden','false');
+      // start confetti inside the overlay
+      startConfetti(o);
+      clearTimeout(o._hideTimeout);
+      // hide overlay after total duration (matching confetti lifecycle)
+      o._hideTimeout = setTimeout(()=>hideThankYou(), 6000);
+    }
+    function hideThankYou(){
+      const o = document.getElementById('thankYouOverlay');
+      if(!o) return;
+      o.classList.remove('show');
+      o.setAttribute('aria-hidden','true');
+      clearTimeout(o._hideTimeout);
+      stopConfetti();
+    }
+
+    // close button and click outside to close (attache de façon défensive)
+    const closeBtn = document.getElementById('closeThanks');
+    if (closeBtn) closeBtn.addEventListener('click', hideThankYou);
+
+    const overlayEl = document.getElementById('thankYouOverlay');
+    if (overlayEl) {
+      overlayEl.addEventListener('click', (e)=>{
+        if(e.target && e.target.id === 'thankYouOverlay') hideThankYou();
+      });
+    }
+
+    // fermeture au clavier (Escape)
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') hideThankYou();
+    });
 
     function previewResource(res){
       if(res.type === 'mockup'){
