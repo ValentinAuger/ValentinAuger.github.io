@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>hyper mega auvers</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+/* 🎥 Vidéo en fond */
+.video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* 🎯 Container centré */
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🧊 Carte 3D */
+.card {
+  width: 300px;
+  height: 90vh;
+  perspective: 1000px;
+}
+
+.inner-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.1s ease;
+  transform-style: preserve-3d;
+}
+
+.inner-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎥 VIDEO BACKGROUND -->
+<video class="video-bg" autoplay muted loop playsinline>
+  <source src="./Main Comp.mp4" type="video/mp4">
+</video>
+
+<div class="container">
+  <div class="card">
+    <div class="inner-card" id="card">
+      <img src="./ticket de caisse.png" alt="">
+    </div>
+  </div>
+</div>
+
+<script>
+const card = document.getElementById("card");
+
+/* 🖱️ DESKTOP (hover souris) */
+document.addEventListener("mousemove", (e) => {
+  const x = (window.innerWidth / 2 - e.clientX) / 20;
+  const y = (window.innerHeight / 2 - e.clientY) / 20;
+
+  card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+});
+
+/* 📱 MOBILE (gyroscope) */
+if (window.DeviceOrientationEvent) {
+  window.addEventListener("deviceorientation", (event) => {
+    let tiltX = event.beta;  // avant/arrière
+    let tiltY = event.gamma; // gauche/droite
+
+    if (tiltX !== null && tiltY !== null) {
+      let x = tiltY / 3;
+      let y = tiltX / 3;
+
+      card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    }
+  });
+}
+
+/* 🔄 Reset quand pas d'interaction */
+document.addEventListener("mouseleave", () => {
+  card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+});
+</script>
+
+</body>
+</html>
