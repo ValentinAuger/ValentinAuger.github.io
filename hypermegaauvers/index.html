@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>hyper mega auvers</title>
+<title>3D Card iOS Compatible</title>
 
 <style>
 * {
@@ -17,7 +17,7 @@ body {
   font-family: sans-serif;
 }
 
-/* 🎥 Vidéo en fond */
+/* 🎥 Background video */
 .video-bg {
   position: fixed;
   top: 0;
@@ -28,7 +28,7 @@ body {
   z-index: -1;
 }
 
-/* 🎯 Container centré */
+/* 🎯 Center */
 .container {
   height: 100vh;
   display: flex;
@@ -36,11 +36,11 @@ body {
   justify-content: center;
 }
 
-/* 🧊 Carte 3D */
+/* 🧊 Card */
 .card {
   width: 300px;
   height: 90vh;
-  perspective: 1000px;
+  perspective: 1200px;
 }
 
 .inner-card {
@@ -48,8 +48,9 @@ body {
   height: 100%;
   border-radius: 20px;
   overflow: hidden;
-  transition: transform 0.1s ease;
   transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+  will-change: transform;
 }
 
 .inner-card img {
@@ -57,53 +58,94 @@ body {
   height: 100%;
   object-fit: cover;
 }
+
+/* 🔘 Bouton iOS permission */
+#enableGyro {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
 </style>
 </head>
 
 <body>
 
-<!-- 🎥 VIDEO BACKGROUND -->
 <video class="video-bg" autoplay muted loop playsinline>
-  <source src="./Main Comp.mp4" type="video/mp4">
+  <source src="video.mp4" type="video/mp4">
 </video>
 
 <div class="container">
   <div class="card">
     <div class="inner-card" id="card">
-      <img src="./ticket de caisse.png" alt="">
+      <img src="./ticket de caisse.png">
     </div>
   </div>
 </div>
 
+<button id="enableGyro">Activer effet 3D</button>
+
 <script>
 const card = document.getElementById("card");
+const btn = document.getElementById("enableGyro");
 
-/* 🖱️ DESKTOP (hover souris) */
+let targetX = 0;
+let targetY = 0;
+let currentX = 0;
+let currentY = 0;
+
+/* 🎥 Animation fluide */
+function animate() {
+  currentX += (targetX - currentX) * 0.1;
+  currentY += (targetY - currentY) * 0.1;
+
+  card.style.transform = `rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* 🖱️ Desktop */
 document.addEventListener("mousemove", (e) => {
-  const x = (window.innerWidth / 2 - e.clientX) / 20;
-  const y = (window.innerHeight / 2 - e.clientY) / 20;
-
-  card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+  targetX = (window.innerWidth / 2 - e.clientX) / 20;
+  targetY = (window.innerHeight / 2 - e.clientY) / 20;
 });
 
-/* 📱 MOBILE (gyroscope) */
-if (window.DeviceOrientationEvent) {
+/* 📱 Fonction gyro */
+function enableGyro() {
   window.addEventListener("deviceorientation", (event) => {
-    let tiltX = event.beta;  // avant/arrière
-    let tiltY = event.gamma; // gauche/droite
-
-    if (tiltX !== null && tiltY !== null) {
-      let x = tiltY / 3;
-      let y = tiltX / 3;
-
-      card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    if (event.beta !== null && event.gamma !== null) {
+      targetX = event.gamma / 3;
+      targetY = event.beta / 3;
     }
   });
 }
 
-/* 🔄 Reset quand pas d'interaction */
-document.addEventListener("mouseleave", () => {
-  card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+/* 🍏 iOS permission */
+btn.addEventListener("click", () => {
+  if (typeof DeviceOrientationEvent.requestPermission === "function") {
+    DeviceOrientationEvent.requestPermission()
+      .then(response => {
+        if (response === "granted") {
+          enableGyro();
+          btn.style.display = "none";
+        } else {
+          alert("Permission refusée 😢");
+        }
+      })
+      .catch(console.error);
+  } else {
+    enableGyro(); // Android direct
+    btn.style.display = "none";
+  }
 });
 </script>
 
