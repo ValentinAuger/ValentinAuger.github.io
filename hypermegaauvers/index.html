@@ -95,20 +95,20 @@ body {
 
 <script>
 const card = document.getElementById("card");
-const btn = document.getElementById("enableGyro");
 
 let targetX = 0;
 let targetY = 0;
 let currentX = 0;
 let currentY = 0;
 
-/* 🎥 Animation fluide */
+let gyroActivated = false;
+
+/* 🎯 Animation fluide */
 function animate() {
   currentX += (targetX - currentX) * 0.1;
   currentY += (targetY - currentY) * 0.1;
 
   card.style.transform = `rotateY(${currentX}deg) rotateX(${currentY}deg)`;
-
   requestAnimationFrame(animate);
 }
 animate();
@@ -119,34 +119,44 @@ document.addEventListener("mousemove", (e) => {
   targetY = (window.innerHeight / 2 - e.clientY) / 20;
 });
 
-/* 📱 Fonction gyro */
-function enableGyro() {
+/* 📱 Gyro */
+function startGyro() {
   window.addEventListener("deviceorientation", (event) => {
     if (event.beta !== null && event.gamma !== null) {
-      targetX = event.gamma / 3;
-      targetY = event.beta / 3;
+      targetX = event.gamma / 4;
+      targetY = event.beta / 4;
     }
-  });
+  }, true);
 }
 
-/* 🍏 iOS permission */
-btn.addEventListener("click", () => {
-  if (typeof DeviceOrientationEvent.requestPermission === "function") {
-    DeviceOrientationEvent.requestPermission()
-      .then(response => {
-        if (response === "granted") {
-          enableGyro();
-          btn.style.display = "none";
-        } else {
-          alert("Permission refusée 😢");
-        }
-      })
-      .catch(console.error);
-  } else {
-    enableGyro(); // Android direct
-    btn.style.display = "none";
+/* 🍏 Activation UNE SEULE FOIS */
+async function enableGyro() {
+  if (gyroActivated) return;
+  gyroActivated = true;
+
+  try {
+    if (typeof DeviceOrientationEvent.requestPermission === "function") {
+      const res = await DeviceOrientationEvent.requestPermission();
+
+      if (res === "granted") {
+        startGyro();
+        console.log("Gyro activé ✅");
+      } else {
+        console.log("Permission refusée ❌");
+      }
+    } else {
+      // Android
+      startGyro();
+    }
+  } catch (err) {
+    console.error(err);
   }
-});
+}
+
+/* 👉 UN SEUL événement */
+document.addEventListener("click", enableGyro, { once: true });
+document.addEventListener("touchstart", enableGyro, { once: true });
+
 </script>
 
 </body>
