@@ -32,8 +32,8 @@ body {
 
 /* 🧊 Card */
 .card {
-  width: 300px;
   height: 90vh;
+  width: auto;
   perspective: 1200px;
 }
 
@@ -51,7 +51,7 @@ body {
 .inner-card img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 </style>
 </head>
@@ -66,10 +66,16 @@ body {
   </div>
 </div>
 
+<button id="startGyro">Activer le mode interactif</button>
+
 <script>
 
+/* =========================
+   🎬 BACKGROUND INTELLIGENT
+========================= */
+
 function getBackgroundGif() {
-  const isMobile = window.innerWidth <= 800;
+  const isMobile = window.innerWidth <= window.innerHeight;
 
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
@@ -79,7 +85,7 @@ function getBackgroundGif() {
     const type = connection.effectiveType;
     isLowQuality = ["slow-2g", "2g", "3g"].includes(type);
   } else {
-    // fallback si pas supporté (Safari)
+    // fallback (Safari etc.)
     isLowQuality = window.innerWidth < 500;
   }
 
@@ -100,11 +106,12 @@ function applyBackground() {
 }
 
 applyBackground();
-
-/* 🔄 update si resize */
 window.addEventListener("resize", applyBackground);
 
 
+/* =========================
+   🧊 ANIMATION 3D
+========================= */
 
 const card = document.getElementById("card");
 
@@ -112,8 +119,6 @@ let targetX = 0;
 let targetY = 0;
 let currentX = 0;
 let currentY = 0;
-
-let gyroActivated = false;
 
 /* 🎯 Animation fluide */
 function animate() {
@@ -125,13 +130,17 @@ function animate() {
 }
 animate();
 
-/* 🖱️ Desktop */
+/* 🖱️ Desktop (souris) */
 document.addEventListener("mousemove", (e) => {
   targetX = (window.innerWidth / 2 - e.clientX) / 20;
   targetY = (window.innerHeight / 2 - e.clientY) / 20;
 });
 
-/* 📱 Gyro */
+
+/* =========================
+   📱 GYRO AU CLIC
+========================= */
+
 function startGyro() {
   window.addEventListener("deviceorientation", (event) => {
     if (event.beta !== null && event.gamma !== null) {
@@ -141,34 +150,46 @@ function startGyro() {
   }, true);
 }
 
-/* 🍏 Activation UNE SEULE FOIS */
+let gyroActivated = false;
+
 async function enableGyro() {
   if (gyroActivated) return;
   gyroActivated = true;
 
   try {
-    if (typeof DeviceOrientationEvent.requestPermission === "function") {
+    // iOS (demande permission)
+    if (
+      typeof DeviceOrientationEvent !== "undefined" &&
+      typeof DeviceOrientationEvent.requestPermission === "function"
+    ) {
       const res = await DeviceOrientationEvent.requestPermission();
 
       if (res === "granted") {
         startGyro();
-        console.log("Gyro activé");
+        console.log("Gyro autorisé");
       } else {
-        console.log("Permission gyro refusée");
+        console.log("Gyro refusé");
       }
     } else {
-      // Android
+      // Android / autres
       startGyro();
+      console.log("Gyro activé");
     }
   } catch (err) {
-    console.error(err);
+    console.error("Erreur gyro :", err);
   }
 }
 
-/* 👉 UN SEUL événement */
-document.addEventListener("click", enableGyro, { once: true });
-document.addEventListener("touchstart", enableGyro, { once: true });
+/* 👇 premier clic / touch sur la page */
+function handleFirstInteraction() {
+  enableGyro();
 
+  document.removeEventListener("click", handleFirstInteraction);
+  document.removeEventListener("touchstart", handleFirstInteraction);
+}
+
+document.addEventListener("click", handleFirstInteraction);
+document.addEventListener("touchstart", handleFirstInteraction);
 </script>
 
 </body>
