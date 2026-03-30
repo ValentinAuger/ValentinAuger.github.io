@@ -197,21 +197,26 @@ function enableGyroIOS() {
             console.log("Gyro OK iOS");
           } else {
             console.log("Gyro refusé");
+            gyroActivated = false;
           }
         })
-        .catch(console.error);
+        .catch((err) => {
+          console.error(err);
+          gyroActivated = false;
+        });
     } else {
       startGyro();
       console.log("Gyro Android OK");
     }
   } catch (err) {
     console.error(err);
+    gyroActivated = false;
   }
 }
 
 /* 👇 activation au clic n'importe où */
-document.body.addEventListener("click", enableGyroIOS, { once: true });
-document.body.addEventListener("touchstart", enableGyroIOS, { once: true });
+document.body.addEventListener("click", enableGyroIOS);
+document.body.addEventListener("touchstart", enableGyroIOS);
 
 </script>
 
