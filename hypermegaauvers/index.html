@@ -165,7 +165,7 @@ document.addEventListener("mousemove", (e) => {
 
 
 /* =========================
-   📱 GYRO + RECALIBRAGE AUTO
+   📱 GYRO FIX IOS + RECENTRAGE PROGRESSIF
 ========================= */
 
 let baseBeta = 0;
@@ -176,8 +176,12 @@ let lastGamma = null;
 
 let stillTimer = null;
 
-const STILL_THRESHOLD = 0.2; // sensibilité (plus bas = plus strict)
-const STILL_TIME = 2000; // 2 secondes
+const STILL_THRESHOLD = 0.2;
+const STILL_TIME = 2000;
+
+/* 🌊 recentrage progressif */
+let isRecentering = false;
+const recenterSpeed = 0.05;
 
 function startGyro() {
   useGyro = true;
@@ -196,28 +200,32 @@ function startGyro() {
       ) {
         if (!stillTimer) {
           stillTimer = setTimeout(() => {
-
-            /* 🎯 recalibrage */
-            baseBeta = beta;
-            baseGamma = gamma;
-
-            /* reset smooth */
-            currentX = 0;
-            currentY = 0;
-            velocityX = 0;
-            velocityY = 0;
-
-            console.log("📍 Nouvelle orientation définie");
-
+            isRecentering = true;
           }, STILL_TIME);
         }
       } else {
         clearTimeout(stillTimer);
         stillTimer = null;
+        isRecentering = false;
       }
 
       lastBeta = beta;
       lastGamma = gamma;
+
+      /* 🌊 interpolation douce vers la nouvelle base */
+      if (isRecentering) {
+        baseBeta += (beta - baseBeta) * recenterSpeed;
+        baseGamma += (gamma - baseGamma) * recenterSpeed;
+
+        if (
+          Math.abs(beta - baseBeta) < 0.05 &&
+          Math.abs(gamma - baseGamma) < 0.05
+        ) {
+          isRecentering = false;
+          baseBeta = beta;
+          baseGamma = gamma;
+        }
+      }
 
       /* 🎯 mouvement relatif */
       targetX = (gamma - baseGamma) / 4;
@@ -261,10 +269,9 @@ function enableGyroIOS() {
   }
 }
 
-/* 👇 activation au clic */
+/* 👇 activation */
 document.body.addEventListener("click", enableGyroIOS);
 document.body.addEventListener("touchstart", enableGyroIOS);
-
 </script>
 
 </body>
