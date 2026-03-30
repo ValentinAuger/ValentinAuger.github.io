@@ -15,8 +15,8 @@ body {
   overflow: hidden;
   height: 100vh;
   font-family: sans-serif;
+  background-color: black;
 
-  /* sera remplacé dynamiquement */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -33,19 +33,19 @@ body {
 /* 🧊 Card */
 .card {
   height: 90vh;
-  width: auto;
+  aspect-ratio: 9/16; /* 🔥 mieux que width:auto */
   perspective: 1200px;
 }
 
 .inner-card {
   width: 100%;
   height: 100%;
-  border-radius: 2px;
+  border-radius: 4px;
   overflow: hidden;
   transform-style: preserve-3d;
   transition: transform 0.1s ease-out;
   will-change: transform;
-  box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 20%);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
 .inner-card img {
@@ -66,8 +66,6 @@ body {
   </div>
 </div>
 
-<button id="startGyro">Activer le mode interactif</button>
-
 <script>
 
 /* =========================
@@ -75,38 +73,37 @@ body {
 ========================= */
 
 function getBackgroundGif() {
-  const isMobile = window.innerWidth <= window.innerHeight;
+  const isMobile =  window.innerWidth <= window.innerHeight;
 
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
   let isLowQuality = false;
 
   if (connection && connection.effectiveType) {
-    const type = connection.effectiveType;
-    isLowQuality = ["slow-2g", "2g", "3g"].includes(type);
+    isLowQuality = ["slow-2g", "2g", "3g"].includes(connection.effectiveType);
   } else {
-    // fallback (Safari etc.)
     isLowQuality = window.innerWidth < 500;
   }
 
   if (isMobile) {
-    return isLowQuality 
-      ? "./mobile-low.gif"
-      : "./mobile-high.gif";
+    return isLowQuality ? "./mobile-low.gif" : "./mobile-high.gif";
   } else {
-    return isLowQuality 
-      ? "./desktop-low.gif"
-      : "./desktop-high.gif";
+    return isLowQuality ? "./desktop-low.gif" : "./desktop-high.gif";
   }
 }
 
 function applyBackground() {
-  const bg = getBackgroundGif();
-  document.body.style.backgroundImage = `url('${bg}')`;
+  document.body.style.backgroundImage = `url('${getBackgroundGif()}')`;
 }
 
+/* debounce resize (perf 🔥) */
+let resizeTimeout;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(applyBackground, 200);
+});
+
 applyBackground();
-window.addEventListener("resize", applyBackground);
 
 
 /* =========================
@@ -120,6 +117,8 @@ let targetY = 0;
 let currentX = 0;
 let currentY = 0;
 
+let useGyro = false;
+
 /* 🎯 Animation fluide */
 function animate() {
   currentX += (targetX - currentX) * 0.1;
@@ -130,8 +129,10 @@ function animate() {
 }
 animate();
 
-/* 🖱️ Desktop (souris) */
+/* 🖱️ Desktop UNIQUEMENT */
 document.addEventListener("mousemove", (e) => {
+  if (useGyro) return; // 🔥 évite conflit
+
   targetX = (window.innerWidth / 2 - e.clientX) / 20;
   targetY = (window.innerHeight / 2 - e.clientY) / 20;
 });
@@ -142,6 +143,8 @@ document.addEventListener("mousemove", (e) => {
 ========================= */
 
 function startGyro() {
+  useGyro = true;
+
   window.addEventListener("deviceorientation", (event) => {
     if (event.beta !== null && event.gamma !== null) {
       targetX = event.gamma / 4;
@@ -157,7 +160,6 @@ async function enableGyro() {
   gyroActivated = true;
 
   try {
-    // iOS (demande permission)
     if (
       typeof DeviceOrientationEvent !== "undefined" &&
       typeof DeviceOrientationEvent.requestPermission === "function"
@@ -171,7 +173,6 @@ async function enableGyro() {
         console.log("Gyro refusé");
       }
     } else {
-      // Android / autres
       startGyro();
       console.log("Gyro activé");
     }
@@ -180,7 +181,6 @@ async function enableGyro() {
   }
 }
 
-/* 👇 premier clic / touch sur la page */
 function handleFirstInteraction() {
   enableGyro();
 
@@ -190,6 +190,7 @@ function handleFirstInteraction() {
 
 document.addEventListener("click", handleFirstInteraction);
 document.addEventListener("touchstart", handleFirstInteraction);
+
 </script>
 
 </body>
