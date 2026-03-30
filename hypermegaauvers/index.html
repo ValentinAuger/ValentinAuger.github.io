@@ -45,13 +45,13 @@ body {
   transform-style: preserve-3d;
   transition: transform 0.1s ease-out;
   will-change: transform;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
 .inner-card img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 </style>
 </head>
@@ -73,7 +73,7 @@ body {
 ========================= */
 
 function getBackgroundGif() {
-  const isMobile =  window.innerWidth <= window.innerHeight;
+  const isMobile = window.innerWidth < window.innerHeight;
 
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
@@ -96,7 +96,7 @@ function applyBackground() {
   document.body.style.backgroundImage = `url('${getBackgroundGif()}')`;
 }
 
-/* debounce resize (perf 🔥) */
+/* debounce resize */
 let resizeTimeout;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimeout);
@@ -107,31 +107,57 @@ applyBackground();
 
 
 /* =========================
-   🧊 ANIMATION 3D
+   🧊 ANIMATION AVEC INERTIE
 ========================= */
 
 const card = document.getElementById("card");
 
 let targetX = 0;
 let targetY = 0;
+
 let currentX = 0;
 let currentY = 0;
 
+let velocityX = 0;
+let velocityY = 0;
+
 let useGyro = false;
 
-/* 🎯 Animation fluide */
-function animate() {
-  currentX += (targetX - currentX) * 0.1;
-  currentY += (targetY - currentY) * 0.1;
+/* réglages physiques */
+const stiffness = 0.01;
+const damping = 0.92;
 
-  card.style.transform = `rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+/* 🎯 animation loop */
+function animate() {
+  const forceX = (targetX - currentX) * stiffness;
+  const forceY = (targetY - currentY) * stiffness;
+
+  velocityX += forceX;
+  velocityY += forceY;
+
+  velocityX *= damping;
+  velocityY *= damping;
+
+  currentX += velocityX;
+  currentY += velocityY;
+
+  card.style.transform = `
+    rotateY(${currentX}deg)
+    rotateX(${currentY}deg)
+    translateZ(20px)
+  `;
+
   requestAnimationFrame(animate);
 }
 animate();
 
-/* 🖱️ Desktop UNIQUEMENT */
+
+/* =========================
+   🖱️ SOURIS (desktop uniquement)
+========================= */
+
 document.addEventListener("mousemove", (e) => {
-  if (useGyro) return; // 🔥 évite conflit
+  if (useGyro) return;
 
   targetX = (window.innerWidth / 2 - e.clientX) / 20;
   targetY = (window.innerHeight / 2 - e.clientY) / 20;
@@ -139,7 +165,7 @@ document.addEventListener("mousemove", (e) => {
 
 
 /* =========================
-   📱 GYRO AU CLIC
+   📱 GYRO FIX IOS
 ========================= */
 
 function startGyro() {
@@ -155,7 +181,7 @@ function startGyro() {
 
 let gyroActivated = false;
 
-async function enableGyro() {
+function enableGyroIOS() {
   if (gyroActivated) return;
   gyroActivated = true;
 
@@ -164,32 +190,28 @@ async function enableGyro() {
       typeof DeviceOrientationEvent !== "undefined" &&
       typeof DeviceOrientationEvent.requestPermission === "function"
     ) {
-      const res = await DeviceOrientationEvent.requestPermission();
-
-      if (res === "granted") {
-        startGyro();
-        console.log("Gyro autorisé");
-      } else {
-        console.log("Gyro refusé");
-      }
+      DeviceOrientationEvent.requestPermission()
+        .then((response) => {
+          if (response === "granted") {
+            startGyro();
+            console.log("Gyro OK iOS");
+          } else {
+            console.log("Gyro refusé");
+          }
+        })
+        .catch(console.error);
     } else {
       startGyro();
-      console.log("Gyro activé");
+      console.log("Gyro Android OK");
     }
   } catch (err) {
-    console.error("Erreur gyro :", err);
+    console.error(err);
   }
 }
 
-function handleFirstInteraction() {
-  enableGyro();
-
-  document.removeEventListener("click", handleFirstInteraction);
-  document.removeEventListener("touchstart", handleFirstInteraction);
-}
-
-document.addEventListener("click", handleFirstInteraction);
-document.addEventListener("touchstart", handleFirstInteraction);
+/* 👇 activation au clic n'importe où */
+document.body.addEventListener("click", enableGyroIOS, { once: true });
+document.body.addEventListener("touchstart", enableGyroIOS, { once: true });
 
 </script>
 
