@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Hyper mega auvers</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  height: 100vh;
+  font-family: sans-serif;
+
+  /* sera remplacé dynamiquement */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 🎯 Center */
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🧊 Card */
+.card {
+  width: 300px;
+  height: 90vh;
+  perspective: 1200px;
+}
+
+.inner-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+  box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 20%);
+}
+
+.inner-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <div class="inner-card" id="card">
+      <img src="./ticket de caisse.png">
+    </div>
+  </div>
+</div>
+
+<script>
+
+function getBackgroundGif() {
+  const isMobile = window.innerWidth <= 800;
+
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+  let isLowQuality = false;
+
+  if (connection && connection.effectiveType) {
+    const type = connection.effectiveType;
+    isLowQuality = ["slow-2g", "2g", "3g"].includes(type);
+  } else {
+    // fallback si pas supporté (Safari)
+    isLowQuality = window.innerWidth < 500;
+  }
+
+  if (isMobile) {
+    return isLowQuality 
+      ? "./mobile-low.gif"
+      : "./mobile-high.gif";
+  } else {
+    return isLowQuality 
+      ? "./desktop-low.gif"
+      : "./desktop-high.gif";
+  }
+}
+
+function applyBackground() {
+  const bg = getBackgroundGif();
+  document.body.style.backgroundImage = `url('${bg}')`;
+}
+
+applyBackground();
+
+/* 🔄 update si resize */
+window.addEventListener("resize", applyBackground);
+
+
+
+const card = document.getElementById("card");
+
+let targetX = 0;
+let targetY = 0;
+let currentX = 0;
+let currentY = 0;
+
+let gyroActivated = false;
+
+/* 🎯 Animation fluide */
+function animate() {
+  currentX += (targetX - currentX) * 0.1;
+  currentY += (targetY - currentY) * 0.1;
+
+  card.style.transform = `rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* 🖱️ Desktop */
+document.addEventListener("mousemove", (e) => {
+  targetX = (window.innerWidth / 2 - e.clientX) / 20;
+  targetY = (window.innerHeight / 2 - e.clientY) / 20;
+});
+
+/* 📱 Gyro */
+function startGyro() {
+  window.addEventListener("deviceorientation", (event) => {
+    if (event.beta !== null && event.gamma !== null) {
+      targetX = event.gamma / 4;
+      targetY = event.beta / 4;
+    }
+  }, true);
+}
+
+/* 🍏 Activation UNE SEULE FOIS */
+async function enableGyro() {
+  if (gyroActivated) return;
+  gyroActivated = true;
+
+  try {
+    if (typeof DeviceOrientationEvent.requestPermission === "function") {
+      const res = await DeviceOrientationEvent.requestPermission();
+
+      if (res === "granted") {
+        startGyro();
+        console.log("Gyro activé");
+      } else {
+        console.log("Permission gyro refusée");
+      }
+    } else {
+      // Android
+      startGyro();
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/* 👉 UN SEUL événement */
+document.addEventListener("click", enableGyro, { once: true });
+document.addEventListener("touchstart", enableGyro, { once: true });
+
+</script>
+
+</body>
+</html>
