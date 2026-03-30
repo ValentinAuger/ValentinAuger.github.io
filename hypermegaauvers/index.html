@@ -165,16 +165,63 @@ document.addEventListener("mousemove", (e) => {
 
 
 /* =========================
-   📱 GYRO FIX IOS
+   📱 GYRO + RECALIBRAGE AUTO
 ========================= */
+
+let baseBeta = 0;
+let baseGamma = 0;
+
+let lastBeta = null;
+let lastGamma = null;
+
+let stillTimer = null;
+
+const STILL_THRESHOLD = 0.2; // sensibilité (plus bas = plus strict)
+const STILL_TIME = 2000; // 2 secondes
 
 function startGyro() {
   useGyro = true;
 
   window.addEventListener("deviceorientation", (event) => {
     if (event.beta !== null && event.gamma !== null) {
-      targetX = event.gamma / 4;
-      targetY = event.beta / 4;
+
+      const beta = event.beta;
+      const gamma = event.gamma;
+
+      /* 📉 détection immobilité */
+      if (
+        lastBeta !== null &&
+        Math.abs(beta - lastBeta) < STILL_THRESHOLD &&
+        Math.abs(gamma - lastGamma) < STILL_THRESHOLD
+      ) {
+        if (!stillTimer) {
+          stillTimer = setTimeout(() => {
+
+            /* 🎯 recalibrage */
+            baseBeta = beta;
+            baseGamma = gamma;
+
+            /* reset smooth */
+            currentX = 0;
+            currentY = 0;
+            velocityX = 0;
+            velocityY = 0;
+
+            console.log("📍 Nouvelle orientation définie");
+
+          }, STILL_TIME);
+        }
+      } else {
+        clearTimeout(stillTimer);
+        stillTimer = null;
+      }
+
+      lastBeta = beta;
+      lastGamma = gamma;
+
+      /* 🎯 mouvement relatif */
+      targetX = (gamma - baseGamma) / 4;
+      targetY = (beta - baseBeta) / 4;
     }
   }, true);
 }
@@ -214,7 +261,7 @@ function enableGyroIOS() {
   }
 }
 
-/* 👇 activation au clic n'importe où */
+/* 👇 activation au clic */
 document.body.addEventListener("click", enableGyroIOS);
 document.body.addEventListener("touchstart", enableGyroIOS);
 
