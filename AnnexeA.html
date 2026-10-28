@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Coût d’une série d’affiches sérigraphiées artisanalement</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Instrument+Serif:ital@0;1&display=swap');
+      
+      :root {
+        --bg: #ffffff;
+        --fg: #16181f;
+        --mut: #5b6070;
+        --line: #c9cdd6;
+        --ink: #1d2f7a;
+        --brou: #7a4a28;
+        --c1: #1d2f7a;
+        --c2: #4a63c9;
+        --c3: #7a4a28;
+        --c4: #b98a5c;
+        --c5: #8a8f9e;
+        --c6: #16181f;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        color-scheme: light;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #12141c;
+          --fg: #e9ebf3;
+          --mut: #9aa0b3;
+          --line: #2c3040;
+          --ink: #97a8ff;
+          --brou: #d1a073;
+          --c1: #97a8ff;
+          --c2: #5e72d6;
+          --c3: #d1a073;
+          --c4: #8a6a48;
+          --c5: #6a7086;
+          --c6: #e9ebf3;
+          color-scheme: dark;
+        }
+      }
+
+      :root[data-theme="dark"] {
+        --bg: #12141c;
+        --fg: #e9ebf3;
+        --mut: #9aa0b3;
+        --line: #2c3040;
+        --ink: #97a8ff;
+        --brou: #d1a073;
+        --c1: #97a8ff;
+        --c2: #5e72d6;
+        --c3: #d1a073;
+        --c4: #8a6a48;
+        --c5: #6a7086;
+        --c6: #e9ebf3;
+        color-scheme: dark;
+      }
+
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "Instrument Serif", serif;
+      }
+
+      main {
+        max-width: 62rem;
+        margin: 0 auto;
+        padding: 0 1.25rem 4rem;
+      }
+
+      a {
+        color: var(--ink);
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--ink);
+        outline-offset: 2px;
+      }
+
+      header {
+        padding: 4rem 0 2.5rem;
+        border-bottom: 2px solid var(--fg);
+        position: relative;
+      }
+
+      h1 {
+        font-size: clamp(2.2rem, 6vw, 4.4rem);
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin: 1rem 0 1rem;
+        max-width: 16ch;
+      }
+
+      .lead {
+        font-style: italic;
+        max-width: 40rem;
+        color: var(--mut);
+        font-size: 1.1rem;
+        margin: 0;
+      }
+
+      .price {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem 3rem;
+        margin-top: 2.5rem;
+        align-items: flex-end;
+      }
+
+      .price b {
+        display: block;
+        font-size: clamp(3rem, 9vw, 6rem);
+        line-height: 0.95;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        color: var(--ink);
+      }
+
+      .price span {
+        color: var(--mut);
+      }
+
+      .price div:not(:first-child) b {
+        font-size: 2rem;
+        color: var(--fg);
+        letter-spacing: -0.02em;
+      }
+
+      section {
+        padding: 3rem 0 0;
+      }
+
+      h2 {
+        font-size: 1.7rem;
+        letter-spacing: -0.02em;
+        margin: 0 0 0.4rem;
+        font-weight: 600;
+      }
+
+      .sub {
+        color: var(--mut);
+        margin: 0 0 1.25rem;
+        max-width: 42rem;
+      }
+
+      .bar {
+        display: flex;
+        height: 3.2rem;
+        border: 1.5px solid var(--fg);
+        overflow: hidden;
+      }
+
+      .bar i {
+        display: block;
+        min-width: 2px;
+      }
+
+      .legend {
+        font-style: italic;
+        list-style: none;
+        margin: 1rem 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        gap: 0.5rem 1.5rem;
+      }
+
+      .legend li {
+        display: flex;
+        gap: 0.6rem;
+        align-items: baseline;
+      }
+
+      .legend em {
+        width: 0.9rem;
+        height: 0.9rem;
+        flex: none;
+        border: 1px solid var(--fg);
+        align-self: center;
+      }
+
+      .legend .v {
+        margin-left: auto;
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+      }
+
+      .wrap {
+        overflow-x: auto;
+        border-top: 1.5px solid var(--fg);
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 34rem;
+        font-size: 0.95rem;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 0.55rem 0.8rem 0.55rem 0;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        font-weight: 600;
+        color: var(--mut);
+        font-size: 0.85rem;
+      }
+
+      td.n,
+      th.n {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      td.c {
+        color: var(--mut);
+      }
+
+      .tot td {
+        font-weight: 800;
+        border-bottom: 2px solid var(--fg);
+      }
+
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+        gap: 1.25rem;
+        margin: 0 0 1.5rem;
+      }
+
+      .kpis div {
+        border-left: 3px solid var(--ink);
+        padding-left: 0.8rem;
+      }
+
+      .kpis b {
+        display: block;
+        font-size: 1.7rem;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+      }
+
+      .kpis span {
+        color: var(--mut);
+        font-size: 0.9rem;
+      }
+
+      footer {
+         font-style: italic;
+        margin-top: 4rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--line);
+        color: var(--mut);
+        font-size: 0.9rem;
+      }
+
+      .ctrl {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+        gap: 1rem;
+        margin: 2rem 0 0;
+        padding: 1.1rem 1.2rem;
+        border: 2px solid var(--ink);
+        border-radius: 6px;
+        font-size: 1.5rem;
+      }
+
+      .ctrl legend {
+        padding: 0 0.5rem;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      .ctrl label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        font-size: 0.85rem;
+        color: var(--mut);
+      }
+
+      .ctrl input,
+      .ctrl select {
+        font: 700 1.3rem/1.2 inherit;
+        font-family: inherit;
+        color: var(--ink);
+        background: transparent;
+        border: 0;
+        border-bottom: 2px solid var(--ink);
+        padding: 0.3rem 0;
+        width: 100%;
+        border-radius: 0;
+      }
+
+      .ctrl select option {
+        color: #16181f;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <header>
+        <p class="lead" style="margin-top: 2.5rem">Annexe A : Estimation du coût de production d’une affiche artisanale</p>
+        <h1 id="h1">Affiches en sérigraphie artisanale</h1>
+        <p class="lead">
+          Calcul du cout de production d’une série d’affiches sérigraphiées sur papier artisanal, avec estimation du temps de travail.
+        </p>
+
+        <fieldset class="ctrl">
+          <legend>Vos choix</legend>
+          <label>
+            Nombre d’affiches
+            <input id="i-n" type="number" min="1" max="100000" step="1" value="100" inputmode="numeric" />
+          </label>
+          <label>
+            Format
+            <select id="i-f">
+              <option>A2</option>
+              <option>A3</option>
+              <option>A4</option>
+              <option>A5</option>
+            </select>
+          </label>
+          <label>
+            Grammage (g/m²)
+            <input id="i-g" type="number" min="40" max="600" step="10" value="160" inputmode="numeric" />
+          </label>
+          <label>
+            Nombre de couleurs
+            <input id="i-c" type="number" min="1" max="8" step="1" value="2" inputmode="numeric" />
+          </label>
+        </fieldset>
+
+        <div class="price" aria-live="polite">
+          <div><b id="pAff"></b><span>HT par affiche</span></div>
+          <div><b id="pTot"></b><span>HT pour la série</span></div>
+          <div><b id="pH"></b><span id="pHs"></span></div>
+        </div>
+      </header>
+
+      <section>
+        <h2>Repartition des côuts</h2>
+        <p class="sub" id="sub-rep"></p>
+        <div class="bar" id="bar" role="img" aria-label="Répartition du coût total"></div>
+        <ul class="legend" id="legend"></ul>
+      </section>
+
+      <section>
+        <h2>Paramètres</h2>
+        <p class="sub">
+          Details des parametres des calculs
+        </p>
+        <div class="wrap">
+          <table id="t-params">
+            <thead>
+              <tr>
+                <th>Paramètre</th>
+                <th class="n">Valeur</th>
+                <th>Unité</th>
+                <th>Commentaire</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Production du papier</h2>
+        <p class="sub" id="sub-papier"></p>
+        <div class="kpis" id="kpis"></div>
+
+        <div class="wrap">
+          <table id="t-papier">
+            <thead>
+              <tr>
+                <th>Poste</th>
+                <th class="n">Valeur</th>
+                <th>Commentaire</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <h2 style="margin-top: 2rem; font-size: 1.2rem">Formats disponibles</h2>
+        <p class="sub">
+          Le massicot permet de découper plusieurs affiches dans une feuille A2. Le format
+          choisi est surligné.
+        </p>
+        <div class="wrap">
+          <table id="t-formats">
+            <thead>
+              <tr>
+                <th>Format</th>
+                <th class="n">Largeur (mm)</th>
+                <th class="n">Hauteur (mm)</th>
+                <th class="n">Surface (m²)</th>
+                <th class="n">Facteur</th>
+                <th class="n">Affiches / feuille A2</th>
+                <th class="n">Coupes / feuille A2</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>T-base de sérigraphie</h2>
+        <p class="sub" id="sub-tbase"></p>
+        <div class="wrap">
+          <table id="t-tbase">
+            <thead>
+              <tr>
+                <th>Ingrédient</th>
+                <th class="n">Prix d’achat</th>
+                <th class="n">Conditionnement</th>
+                <th class="n">Prix au L / kg</th>
+                <th class="n">Quantité utilisée</th>
+                <th class="n">Coût</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Pigments naturels</h2>
+        <p class="sub" id="sub-pig"></p>
+        <div class="wrap">
+          <table id="t-pig">
+            <thead>
+              <tr>
+                <th>Pigment</th>
+                <th class="n">Préparation (min)</th>
+                <th>Commentaire</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Sérigraphie</h2>
+        <p class="sub" id="sub-seri"></p>
+        <div class="wrap">
+          <table id="t-seri">
+            <thead>
+              <tr>
+                <th>Poste</th>
+                <th class="n">Valeur</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Temps de travail et charges</h2>
+        <p class="sub">Les charges mensuelles estimé pour un local dans le Vexin (350 €) sont réparties sur 20 jours travaillés par mois.</p>
+        <div class="wrap">
+          <table id="t-temps">
+            <thead>
+              <tr>
+                <th>Poste</th>
+                <th class="n">Valeur</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Detail du prix final</h2>
+        <div class="wrap">
+          <table id="t-total">
+            <thead>
+              <tr>
+                <th>Étape</th>
+                <th class="n">Montant</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      /*CALC*/
+      var P = {
+        loss: 0.15,
+        kit: 180,
+        kitP: 110,
+        life: 1000,
+        rate: 20,
+        cot: 0.1863,
+        emu: 36.95,
+        film: 1,
+        emuQ: 0.05,
+        elec: 0.5,
+        eau: 0.2,
+        net: 1.5,
+        tb: 60,
+        motif: 10,
+        ecran: 40,
+        calage: 15,
+        imp: 0.5,
+        manip: 0.5,
+        nett: 20,
+        rec: 40,
+        rcl: 0.5,
+        chg: 350,
+        hj: 8,
+        mas: 190,
+        dec: 0.5
+      };
+
+      var FM = {
+        A2: [420, 594],
+        A3: [297, 420],
+        A4: [210, 297],
+        A5: [148, 210]
+      };
+
+      var ING = [
+        ["Eau", 0.0049, 1, "L", 530, "mL"],
+        ["Vinaigre de pomme", 8, 0.75, "L", 120, "mL"],
+        ["Farine de blé", 20, 10, "kg", 80, "g"],
+        ["Fécule de maïs", 2, 0.7, "kg", 16, "g"],
+        ["Sucre", 1.85, 1, "kg", 12, "g"],
+        ["Miel", 13, 1, "kg", 5, "g"]
+      ];
+
+      var PIG = [
+        ["Brou de noix", 150, ""],
+        ["Charbon", 60, ""],
+        ["Craie blanche", 120, ""],
+        ["Mûres", 60, ""],
+        ["Pastel", 200, "Beaucoup plus de temps avec le séchage et la fermentation"]
+      ];
+
+      function ru(x) {
+        return Math.ceil(Math.round(x * 1e9) / 1e9);
+      }
+
+      function calc(n, fmt, g, c) {
+        var A2 = (FM.A2[0] * FM.A2[1]) / 1e6;
+        var A3 = (FM.A3[0] * FM.A3[1]) / 1e6;
+        var w = FM[fmt];
+        var s = (w[0] * w[1]) / 1e6;
+        var fac = s / A2;
+        var per = Math.round(A2 / s);
+        var cuts = per + 3;
+        var r = {};
+
+        r.s = s;
+        r.fac = fac;
+        r.film = s / A3;
+        r.per = per;
+        r.nA2 = ru(n + n * P.loss);
+        r.imp = r.nA2;
+        r.feu = ru(r.imp / per);
+        r.eq = r.imp * fac;
+
+        r.cp = r.nA2 * cuts;
+        r.tcut = P.dec * r.cp;
+        r.amM = (n / P.life) * P.mas;
+        r.poids = A2 * g;
+        r.fib = (r.poids / 1000) * r.feu;
+        r.rec = r.fib * P.rcl * 60;
+
+        r.tprod = r.feu * P.rec / 20 + r.tcut;
+        r.tpap = r.rec + r.tprod;
+        r.pap = r.amM + (r.tpap / 60) * P.rate;
+        r.papF = (r.pap / r.nA2) * 0 + r.pap / n;
+
+        var h10 = 0;
+        var e10 = 0;
+        r.ing = ING.map(function (i) {
+          var e = i[1] / i[2];
+          var h = (e * i[4]) / 1000;
+          e10 += e;
+          h10 += h;
+          return [i, e, h];
+        });
+
+        r.e10 = e10;
+        r.h10 = h10;
+        r.h11 = h10 + (P.tb / 60) * P.rate;
+        r.tb = (r.h11 / 100) * r.eq;
+
+        r.pm = PIG.reduce(function (a, p) {
+          return a + p[1];
+        }, 0) / PIG.length;
+        r.pk = (r.pm / 60) * P.rate;
+        r.pigP = (r.pk * c * r.eq) / 1000;
+
+        r.amS = (P.kit / P.life) * n;
+        r.cc = P.emu * P.emuQ * (1 / fac) + P.film + P.elec + P.eau + P.net + h10 + r.film * P.film;
+        r.tc = Math.round((P.tb + P.motif + P.ecran + P.calage + P.imp * r.nA2 + P.manip + P.nett) * 10) / 10;
+        r.ccP = r.cc * c;
+        r.tcP = r.tc * c;
+        r.seri = r.amS + r.ccP + (r.tcP / 60) * P.rate;
+
+        r.tt = r.tcP + r.tpap + (r.pm * c * r.eq) / 1000 + (P.tb / 100) * n;
+        r.th = r.tt / 60;
+        r.j = r.th / P.hj;
+        r.chg = (P.chg / 20) * r.j;
+
+        r.av = r.pigP + r.pap + r.seri + r.tb + r.chg;
+        r.trav = r.th * P.rate;
+        r.part = r.trav / r.av;
+        r.ht = r.av * (1 + P.cot);
+        r.cot = r.ht - r.av;
+        r.un = r.ht / n;
+        r.pctPap = (r.av - r.pap) / r.av;
+
+        return r;
+      }
+      /*END*/
+
+      function f(x, d) {
+        d = d == null ? 2 : d;
+        return x.toLocaleString("fr-FR", {
+          minimumFractionDigits: d,
+          maximumFractionDigits: d
+        });
+      }
+
+      function E(x) {
+        return f(x) + " €";
+      }
+
+      function T(id, rows, spec, tot, hl) {
+        document.querySelector("#" + id + " tbody").innerHTML = rows
+          .map(function (r, k) {
+            return (
+              "<tr" +
+              (k === tot ? ' class="tot"' : "") +
+              (k === hl ? ' style="background:color-mix(in srgb,var(--ink) 14%,transparent)"' : "") +
+              ">" +
+              r
+                .map(function (c, i) {
+                  return (
+                    '<td class="' +
+                    (spec[i] === "n" ? "n" : spec[i] === "c" ? "c" : "") +
+                    '">' +
+                    c +
+                    "</td>"
+                  );
+                })
+                .join("") +
+              "</tr>"
+            );
+          })
+          .join("");
+      }
+
+      var PARAMS = [
+        ["Nombre d’affiches", "100", "affiches", "Nombre d’affiches à produire"],
+        ["Format", "A2", "", ""],
+        ["Grammage du papier", "160", "g/m²", ""],
+        ["Nombre de couleurs", "2", "couleurs", "Écrans à préparer, un par couleur"],
+        ["Matériel de sérigraphie à amortir", "180", "€", "Kit sérigraphie « Papier A3+ » et cadre A2 Dipilu"],
+        ["Matériel pour faire du papier à amortir", "110", "€", "Temps de fabrication et matière première"],
+        ["Durée d’amortissement du matériel", "1 000", "affiches", "Hypothèse de durée de vie totale"],
+        ["Taux horaire cible", "20", "€/h", ""],
+        ["Provision cotisations artiste-auteur", "18,63", "% du bénéfice cible", "Approximation indicative pour simulation BNC 2026"],
+        ["Taux de pertes", "15", "%", ""],
+        ["Prix de l’émulsion", "36,95", "€/unité", "Easy Blue 980 g"],
+        ["Prix du papier transparent", "1", "€/A3/couleur", ""],
+        ["Émulsion par couleur et par écran", "0,05", "pot par A2", "50 g pour un pot de 980 g"],
+        ["Électricité par tirage", "0,50", "€/émulsion", "Cuisson, séchage, exposition"],
+        ["Eau par tirage", "0,20", "€/émulsion", "60 L par émulsion"],
+        ["Nettoyant par tirage", "1,50", "€/émulsion", "Nettoyant, savon, produits de nettoyage"],
+        ["Préparation de la T-base", "60", "min pour 750 g", ""],
+        ["Préparation du motif", "10", "min/tirage", "Préparation du fichier pour l’impression"],
+        ["Écran, émulsion, exposition", "40", "min/couleur", "Préparation, enduction, séchage actif, exposition, dépouillement"],
+        ["Calage et repérage", "15", "min/couleur", "Installation et essais de repérage"],
+        ["Impression", "0,5", "min/affiche/couleur", ""],
+        ["Manipulation et contrôle", "0,5", "min/affiche", ""],
+        ["Nettoyage final", "20", "min/couleur", "Écran, raclette et poste de travail"],
+        ["Préparation du papier recyclé", "40", "min/20 feuilles", "Pas de matière première payante"],
+        ["Récolte et tri des fibres", "0,5", "h/kg", ""],
+        ["Charges mensuelles", "350", "€/mois", "Loyer dans le Vexin, logiciels open source gratuits"],
+        ["Heures travaillées par jour", "8", "heures", ""],
+        ["Achat du massicot", "190", "€", "Dahl 444 920 mm"],
+        ["Temps de découpe", "0,5", "min/coupe", ""]
+      ];
+
+      function st() {
+        var n = +document.getElementById("i-n").value;
+        var g = +document.getElementById("i-g").value;
+        var c = +document.getElementById("i-c").value;
+        var fm = document.getElementById("i-f").value;
+
+        if (!(n >= 1 && g > 0 && c >= 1)) {
+          return;
+        }
+
+        n = Math.min(Math.round(n), 100000);
+        c = Math.min(Math.round(c), 8);
+
+        return { n: n, g: g, c: c, fm: fm };
+      }
+
+      function render() {
+        var v = st();
+        if (!v) {
+          return;
+        }
+
+        var n = v.n;
+        var g = v.g;
+        var c = v.c;
+        var fm = v.fm;
+        var r = calc(n, fm, g, c);
+        var $ = function (i) {
+          return document.getElementById(i);
+        };
+
+        $("h1").textContent =
+          n + " affiches " + fm + " en sérigraphie, " + c + " couleur" + (c > 1 ? "s" : "") + ", papier " + g + " g/m² fait maison";
+        $("pAff").textContent = E(r.un);
+        $("pTot").textContent = E(r.ht);
+        $("pH").textContent = f(r.th, 1) + " h";
+        $("pHs").textContent = "de travail, soit " + f(r.j, 1) + " jours";
+        $("sub-rep").textContent =
+          "Montant avant cotisations : " + E(r.av) + ". Le travail en représente " + E(r.trav) + ", soit " + f(r.part * 100, 1) + " %. Les cotisations artiste-auteur (18,63 %) portent le total à " + E(r.ht) + " HT, sans TVA sous 50 000 € par an.";
+
+        var S = [
+          ["Papier", r.pap, "--c1"],
+          ["Sérigraphie", r.seri, "--c2"],
+          ["Charges fixes", r.chg, "--c3"],
+          ["T-base", r.tb, "--c4"],
+          ["Pigments", r.pigP, "--c5"],
+          ["Cotisations", r.cot, "--c6"]
+        ];
+
+        $("bar").innerHTML = S.map(function (s) {
+          return '<i style="width:' + (s[1] / r.ht * 100) + '%;background:var(' + s[2] + ')" title="' + s[0] + '"></i>';
+        }).join("");
+
+        $("legend").innerHTML = S.map(function (s) {
+          return '<li><em style="background:var(' + s[2] + ')"></em>' + s[0] + '<span class="v">' + E(s[1]) + "</span></li>";
+        }).join("");
+
+        var p = PARAMS.slice();
+        p[0] = ["Nombre d’affiches", f(n, 0), "affiches", "Nombre d’affiches à produire"];
+        p[1] = ["Format", fm, "", ""];
+        p[2] = ["Grammage du papier", f(g, 0), "g/m²", ""];
+        p[3] = ["Nombre de couleurs", f(c, 0), "couleurs", "Écrans à préparer, un par couleur"];
+        T("t-params", p, "lncc");
+
+        $("sub-papier").textContent =
+          r.nA2 + " feuilles sont fabriquées pour " + n + " affiches utiles, avec 15 % de pertes. Chaque feuille pèse environ " + f(r.poids, 1) + " g.";
+
+        var hh = Math.floor(r.tpap / 60);
+        var mm = Math.round(r.tpap % 60);
+        $("kpis").innerHTML = [
+          [r.feu, "feuilles à fabriquer"],
+          [f(r.fib) + " kg", "de fibres à collecter"],
+          [hh + " h " + mm, "de temps de production"],
+          [E(r.pap), "soit " + E(r.pap / r.feu) + " par feuille"]
+        ].map(function (k) {
+          return "<div><b>" + k[0] + "</b><span>" + k[1] + "</span></div>";
+        }).join("");
+
+        T(
+          "t-papier",
+          [
+            ["Format de l’affiche", fm, ""],
+            ["Surface de l’affiche", f(r.s, 5) + " m²", ""],
+            ["Facteur de surface par rapport au A2", f(r.fac, 3), "Multiplie émulsion, T-base et pigments, calculés pour du A2"],
+            ["Feuilles A2 à produire", r.nA2, ""],
+            ["Film transparent", f(r.film, 2) + " A3 par couleur", ""],
+            ["Affiches par feuille fabriquée", r.per, "Le massicot augmente ce nombre"],
+            ["Affiches à imprimer, pertes comprises", r.imp, "Même taux de pertes que le reste du tableau"],
+            ["Coupes au massicot", r.cp, ""],
+            ["Temps de découpe", f(r.tcut, 0) + " min", ""],
+            ["Amortissement du massicot", E(r.amM), ""],
+            ["Poids d’une feuille", f(r.poids) + " g", ""],
+            ["Fibres à collecter", f(r.fib) + " kg", ""],
+            ["Temps de récolte et tri", f(r.rec, 1) + " min", ""],
+            ["Temps de production", f(r.tprod, 0) + " min", ""],
+            ["Temps total de production", f(r.tpap, 1) + " min", ""],
+            ["Prix total", E(r.pap), ""],
+            ["Prix par feuille", E(r.pap / r.feu), ""],
+            ["Part dans le prix final", f((1 - r.pctPap) * 100, 1) + " %", ""]
+          ],
+          "lnc"
+        );
+
+        var A2 = (FM.A2[0] * FM.A2[1]) / 1e6;
+        T(
+          "t-formats",
+          Object.keys(FM).map(function (k) {
+            var a = FM[k];
+            var s = (a[0] * a[1]) / 1e6;
+            var pp = Math.round(A2 / s);
+            return [k, a[0], a[1], f(s, 5), f(s / A2, 3), pp, pp + 3];
+          }),
+          "lnnnnnn",
+          -1,
+          Object.keys(FM).indexOf(fm)
+        );
+
+        $("sub-tbase").textContent =
+          "Pâte maison pour 100 feuilles A2 : " + E(r.h10) + " de matières, " + E(r.h11) + " avec le temps de travail, " + E(r.tb) + " pour ce projet.";
+        T(
+          "t-tbase",
+          r.ing
+            .map(function (x) {
+              var i = x[0];
+              return [
+                i[0],
+                f(i[1], 4).replace(/,?0+$/, "") + " €",
+                f(i[2], 2).replace(/,?0+$/, "") + " " + i[3],
+                E(x[1]),
+                i[4] + " " + i[5],
+                E(x[2])
+              ];
+            })
+            .concat([
+              ["Matières pour 100 feuilles A2", "", "", E(r.e10), "", E(r.h10)],
+              ["Avec temps de travail", "", "", E(r.e10 + P.tb), "", E(r.h11)],
+              ["Total pour le projet", "", "", "", "", E(r.tb)]
+            ]),
+          "lnnnnn",
+          8
+        );
+
+        $("sub-pig").textContent =
+          "Temps de préparation moyen : " + f(r.pm, 0) + " minutes. Prix du stock : " + E(r.pk) + ". Part imputée au projet (" + c + " couleur" + (c > 1 ? "s" : "") + ", 10 % par couleur pour 100 feuilles) : " + E(r.pigP) + ".";
+        T(
+          "t-pig",
+          PIG.map(function (x) {
+            return [x[0], x[1], x[2]];
+          }).concat([["Moyenne", f(r.pm, 0), ""]]),
+          "lnc"
+        );
+
+        $("sub-seri").textContent =
+          c + " écran" + (c > 1 ? "s" : "") + ", un par couleur : " + f(r.tc, 0) + " minutes chacun, soit " + f(r.tcP, 0) + " minutes pour le projet.";
+        T(
+          "t-seri",
+          [
+            ["Amortissement du matériel", E(r.amS)],
+            ["Consommables par couleur", E(r.cc)],
+            ["Temps par couleur", f(r.tc, 0) + " min"],
+            ["Consommables pour le projet", E(r.ccP)],
+            ["Temps pour le projet", f(r.tcP, 0) + " min"],
+            ["Prix de la sérigraphie", E(r.seri)]
+          ],
+          "ln"
+        );
+
+        T(
+          "t-temps",
+          [
+            ["Temps total travaillé", f(r.tt, 1) + " min"],
+            ["Heures travaillées", f(r.th) + " h"],
+            ["Jours de travail", f(r.j) + " jours"],
+            ["Charges réparties sur le projet", E(r.chg)]
+          ],
+          "ln"
+        );
+
+        T(
+          "t-total",
+          [
+            ["Montant avant cotisations", E(r.av)],
+            ["dont valeur du travail", E(r.trav) + " (" + f(r.part * 100, 1) + " %)"],
+            ["Cotisations artiste-auteur (18,63 %)", E(r.cot)],
+            ["Montant HT, sans TVA", E(r.ht)],
+            ["Montant HT par affiche", E(r.un)]
+          ],
+          "ln",
+          4
+        );
+      }
+
+      ["i-n", "i-f", "i-g", "i-c"].forEach(function (id) {
+        document.getElementById(id).addEventListener("input", render);
+      });
+
+      render();
+    </script>
+  </body>
+</html>
